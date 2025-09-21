@@ -1,11 +1,7 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Nav from "./components/Nav";
-
-/* Optional: in globals.css, add for nicer behavior
-   html { scroll-behavior: smooth; }
-*/
 
 /* ===== Password strength helpers ===== */
 const commonPasswords = new Set([
@@ -84,7 +80,7 @@ function generateFeedback(pwd: string, score: number): FeedbackItem[] {
 /* ===== Utilities ===== */
 function prefersReducedMotion() {
   if (typeof window === "undefined") return false;
-  return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)")?.matches ?? false;
 }
 
 /* ===== Typewriter (handle → name, loop) ===== */
@@ -133,7 +129,6 @@ function useOffsetAnchors() {
   useEffect(() => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-    // Limit to links inside the fixed nav/header
     const navScope =
       document.querySelector<HTMLElement>("[data-nav]") ||
       document.querySelector<HTMLElement>("nav, header") ||
@@ -146,14 +141,13 @@ function useOffsetAnchors() {
     const onClick = (e: Event) => {
       const a = e.currentTarget as HTMLAnchorElement;
       const href = a.getAttribute("href") || "";
-      const id = href.slice(1); // fixed: removed stray word
+      const id = href.slice(1);
       if (!id) return;
       const target = document.getElementById(id);
       if (!target) return;
 
       e.preventDefault();
 
-      // Measure the same nav we marked with data-nav
       const navEl =
         document.querySelector<HTMLElement>("[data-nav]") ||
         document.querySelector<HTMLElement>("nav, header");
@@ -162,7 +156,7 @@ function useOffsetAnchors() {
       const rect = target.getBoundingClientRect();
       const absoluteTop = window.scrollY + rect.top;
 
-      const cushion = 4; // snug
+      const cushion = 4;
       const top = Math.max(0, absoluteTop - navHeight - cushion);
 
       window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
@@ -174,106 +168,61 @@ function useOffsetAnchors() {
   }, []);
 }
 
-/* ===== Hero (original glow) ===== */
-function Hero() {
-  const text = useTypeSwap("lostastro", "Jaineel.");
+/* ===== PasswordCard (inline, self-contained) ===== */
+function PasswordCard() {
+  const [pwd, setPwd] = useState("");
+  const score = calculateStrength(pwd);
+  const level = getStrengthLevel(score);
+  const feedback = generateFeedback(pwd, score);
+
+  const bar = (() => {
+    const colors = {
+      "Very Weak": "bg-rose-500",
+      "Weak": "bg-amber-500",
+      "Medium": "bg-yellow-400",
+      "Strong": "bg-emerald-500",
+      "Very Strong": "bg-sky-500",
+    } as const;
+    return colors[level as keyof typeof colors] || "bg-slate-500";
+  })();
 
   return (
-    <main id="top" className="min-h-screen flex items-center justify-center bg-black text-sky-200 relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[28rem] w-[60rem] -translate-x-1/2 rounded-full bg-sky-500/10 blur-3xl" />
-        <div className="absolute bottom-[-10rem] right-[-10rem] h-[22rem] w-[22rem] rounded-full bg-emerald-400/5 blur-3xl" />
+    <div className="rounded-xl bg-black/40 ring-1 ring-white/10 p-4">
+      <label className="block text-sm text-sky-300/80" htmlFor="pwd">Try a password</label>
+      <input
+        id="pwd"
+        type="password"
+        value={pwd}
+        onChange={(e) => setPwd(e.target.value)}
+        placeholder="Type here..."
+        className="mt-2 w-full rounded-lg bg-slate-900/60 px-3 py-2 text-sky-100 ring-1 ring-white/10 outline-none focus:ring-sky-400/40"
+      />
+
+      <div className="mt-4">
+        <div className="flex items-center justify-between text-xs text-sky-300/80">
+          <span>Strength: {level}</span>
+          <span>{score}%</span>
+        </div>
+        <div className="mt-1 h-2 w-full rounded-full bg-slate-800 overflow-hidden">
+          <div className={`h-2 ${bar} transition-all`} style={{ width: `${score}%` }} />
+        </div>
       </div>
 
-      <section className="relative mx-auto max-w-3xl px-6 text-center">
-        <p className="text-sm tracking-wide text-sky-300/80">Welcome</p>
-
-        <h1 className="mt-3 text-6xl sm:text-7xl xl:text-8xl font-semibold tracking-tight">
-          <span className="text-sky-300/90">{text}</span>
-          <span className="ml-1 inline-block h-[2.25rem] w-2 translate-y-1 align-middle bg-sky-400/80 animate-pulse" />
-        </h1>
-
-        <p className="mt-5 text-lg text-sky-300/85">
-          Learning by building — software and systems with a strong interest in cybersecurity, aiming for a 2026 internship.
-        </p>
-
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-[11px] text-sky-300/80">
-          <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Foundations • 2025→2026</span>
-          <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Computer Science • from 2027</span>
-          <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Hands‑on projects</span>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a href="#journey" className="rounded-lg bg-sky-500/20 px-5 py-2.5 text-sky-100 ring-1 ring-sky-400/30 hover:bg-sky-500/25">
-            See journey
-          </a>
-          <a href="#projects" className="rounded-lg bg-white/5 px-5 py-2.5 text-sky-100 ring-1 ring-white/10 hover:bg-white/10">
-            View projects
-          </a>
-          <a href="#about" className="rounded-full bg-white/5 px-4 py-2 text-sm text-sky-300 ring-1 ring-white/10 hover:bg-white/10">
-            About
-          </a>
-        </div>
-
-        <p className="mt-4 text-sm text-sky-300/75">
-          Objective: junior developer focused on software, systems, and cybersecurity fundamentals — open to 2026 internships.
-        </p>
-
-        <div className="mt-8 flex items-center justify-center text-xs text-sky-300/60">
-          <span className="inline-flex items-center gap-2">
-            <span className="size-1.5 rounded-full bg-sky-300/70 animate-pulse" />
-            Scroll to explore
-          </span>
-        </div>
-      </section>
-    </main>
+      <ul className="mt-3 space-y-1.5 text-xs">
+        {feedback.map((f, i) => (
+          <li key={i} className="flex items-center gap-2 text-sky-300/85">
+            <span className={`size-1.5 rounded-full ${
+              f.tone === "good" ? "bg-emerald-500" : f.tone === "danger" ? "bg-rose-500" : "bg-amber-400"
+            }`} />
+            <span>{f.text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
-/* ===== Skill pill with tiny inline icons ===== */
-function Pill({ label }: { label: string }) {
-  const Icon = () => {
-    switch (label) {
-      case "Python":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 2c3 0 5 2 5 5v2H7V7c0-3 2-5 5-5zM7 11h10v2c0 3-2 5-5 5s-5-2-5-5v-2z"/></svg>;
-      case "JavaScript":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 3h18v18H3zM13 17c0 2-1 3-3 3-1 0-2-.4-3-1l1-2c.5.4 1 .7 1.6.7.7 0 1.1-.3 1.1-1.2V10h2v7zm6 .1c0 1.9-1.3 2.9-3.1 2.9-1.3 0-2.3-.5-3-1.2l1.2-1.8c.5.5 1 .8 1.8.8.6 0 1.1-.3 1.1-1 0-.7-.5-1-1.3-1.4l-.4-.2c-1.2-.5-2.1-1.2-2.1-2.7 0-1.6 1.2-2.6 3-2.6 1.3 0 2.2.5 2.9 1.1l-1.1 1.7c-.5-.4-1-.7-1.7-.7-.6 0-1 .3-1 .9 0 .6.4.9 1.3 1.3l.4.2c1.4.6 2.4 1.2 2.4 2.8z"/></svg>;
-      case "HTML5":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 2l1.7 19.6L12 22l7.3-.4L21 2H3zm14 5l-.2 2.2-4.8 2-.1.1H15L14.6 15 12 16l-2.6-1-.2-2H8l.1 1.7 4 .9 4-1 .6-6.6H7.2L7 6h10z"/></svg>;
-      case "CSS3":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 2l1.7 19.6L12 22l7.3-.4L21 2H3zm12.9 6H9.3l.1 1.6h6.3l-.4 4.5L12 16l-3.3-1.1-.2-2h1.7l.1.9L12 14l1.7-.6.2-2.2H8.2L7.8 6h9.4l-.3 2z"/></svg>;
-      case "PHP":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M4 9h4c2 0 3 1 3 3s-1 3-3 3H6v2H4V9zm2 2v2h2c1 0 1-1 1-1s0-1-1-1H6zm8-2h2v3h2V9h2v8h-2v-3h-2v3h-2V9z"/></svg>;
-      case "SQL":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 3c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zm-8 6v4c0 1.7 3.6 3 8 3s8-1.3 8-3V9c-1.7 1.3-5 2-8 2s-6.3-.7-8-2z"/></svg>;
-      case "Linux":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 2c2.2 0 4 1.8 4 4 0 1.3-.6 2.5-1.6 3.2.8 2.1 3.6 3.7 3.6 7.3 0 2.6-2.5 4.5-6 4.5s-6-1.9-6-4.5c0-3.6 2.8-5.2 3.6-7.3C8.6 8.5 8 7.3 8 6c0-2.2 1.8-4 4-4z"/></svg>;
-      case "Bash":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 6l9-4 9 4v12l-9 4-9-4V6zm9 9h4v2h-4v-2zm-6-7l4 3-4 3V8z"/></svg>;
-      case "Networking":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z"/></svg>;
-      case "Databases":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 3c4.4 0 8 1.6 8 3.5S16.4 10 12 10 4 8.4 4 6.5 7.6 3 12 3zm-8 6v4.5C4 15.4 7.6 17 12 17s8-1.6 8-3.5V9c-1.9 1.4-5 2.2-8 2.2S5.9 10.4 4 9zm0 6v4.5C4 21.4 7.6 23 12 23s8-1.6 8-3.5V15c-1.9 1.4-5 2.2-8 2.2S5.9 16.4 4 15z"/></svg>;
-      case "Cloud Basics":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M6 16a4 4 0 010-8 5 5 0 019.6-1.2A4 4 0 1117 16H6z"/></svg>;
-      case "Data Structures":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M7 5h4v4H7V5zm6 0h4v4h-4V5zM7 11h4v4H7v-4zm6 0h4v4h-4v-4z"/></svg>;
-      case "Web Security":
-        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 2l7 4v6c0 5-3.1 7.9-7 10-3.9-2.1-7-5-7-10V6l7-4zm0 5a3 3 0 100 6 3 3 0 000-6z"/></svg>;
-      default:
-        return null;
-    }
-  };
-  return (
-    <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-slate-800/80 to-slate-900/80 px-3 py-1.5 text-sm ring-1 ring-white/10 shadow-sm">
-      <Icon />
-      <span>{label}</span>
-    </span>
-  );
-}
-
-/* ===== Journey helpers and components unchanged below ===== */
-
+/* ===== Journey helpers and components ===== */
 type Phase = { id: string; title: string; start: string; end: string; markers?: { label: string; atISO: string }[] };
 
 function pctBetween(startISO: string, endISO: string, now = Date.now()) {
@@ -306,7 +255,8 @@ function phaseStatus(startISO: string, endISO: string) {
 
 function JourneyTimeline() {
   const phases: Phase[] = [
-    { id: "foundations", title: "Foundational IT Study", start: "2025-10-07", end: "2026-10-07", markers: [{ label: "Halfway", atISO: "2026-04-07" }] },
+    { id: "foundations", title: "Cert IV in Cyber Security", start: "2025-10-07", end: "2026-10-07",
+      markers: [{ label: "Halfway", atISO: "2026-04-07" }] },
     { id: "gap", title: "Transition and prep", start: "2026-10-08", end: "2027-02-01" },
     { id: "bachelor", title: "Bachelor of IT (Computer Science Major)", start: "2027-02-01", end: "2030-02-01",
       markers: [{ label: "Year 1", atISO: "2028-02-01" }, { label: "Year 2", atISO: "2029-02-01" }, { label: "Year 3", atISO: "2030-02-01" }] },
@@ -359,7 +309,7 @@ function JourneyTimeline() {
                     return (
                       <div key={m.label} className="absolute inset-y-0" style={{ left: `${mp}%` }}>
                         <div className="h-2 w-px bg-white/60" />
-                        <div className="absolute -top-5 -translate-x-1/2 whitespace-nowrap text-[10px] text-sky-300/80">{m.label}</div>
+                        <div className="absolute -top-5 -translate-x-1/2 whitespace-nowrap text-sky-300/80">{m.label}</div>
                       </div>
                     );
                   })}
@@ -373,6 +323,152 @@ function JourneyTimeline() {
   );
 }
 
+/* ===== Hero (with soft aurora background effect) ===== */
+function Hero() {
+  const text = useTypeSwap("lostastr0", "Jaineel.");
+
+  return (
+    <main id="top" className="relative min-h-screen flex flex-col items-center justify-center bg-black text-sky-200 overflow-hidden px-6">
+      {/* Aurora Background Layers */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute h-full w-full top-0 left-0 opacity-30" style={{
+          background:
+            'radial-gradient(ellipse 35% 60% at 50% 30%, #33ffbb88, transparent 80%), ' +
+            'radial-gradient(ellipse 40% 70% at 40% 70%, #33aaff77, transparent 75%), ' +
+            'radial-gradient(ellipse 50% 80% at 70% 50%, #55ddffaa, transparent 70%)',
+          animation: 'aurora 20s ease-in-out infinite alternate',
+          filter: 'blur(120px)'
+        }} />
+        <style jsx>{`
+          @keyframes aurora {
+            0% {
+              background-position: 50% 30%, 40% 70%, 70% 50%;
+            }
+            100% {
+              background-position: 60% 40%, 30% 60%, 80% 40%;
+            }
+          }
+        `}</style>
+      </div>
+
+      {/* Original Glow Blurs */}
+      <div className="pointer-events-none absolute inset-0 -z-20">
+        <div className="absolute -top-40 left-1/2 h-[28rem] w-[60rem] -translate-x-1/2 rounded-full bg-sky-500/10 blur-3xl" />
+        <div className="absolute bottom-[-10rem] right-[-10rem] h-[22rem] w-[22rem] rounded-full bg-emerald-400/5 blur-3xl" />
+      </div>
+
+      {/* Hero Content */}
+      <section className="relative max-w-3xl text-center z-10">
+        <p className="text-sm tracking-wide text-sky-300/80 mb-2">Welcome</p>
+
+        <h1 className="text-6xl sm:text-7xl xl:text-8xl font-semibold tracking-tight">
+          <span className="text-sky-300/90">{text}</span>
+          <span className="ml-1 inline-block h-[2.25rem] w-2 translate-y-1 align-middle bg-sky-400/80 animate-pulse" />
+        </h1>
+
+        <p className="mt-5 text-lg text-sky-300/85 max-w-xl mx-auto">
+          Exploring cybersecurity today, growing into Computer Science tomorrow.
+        </p>
+      </section>
+
+      <div className="mt-12 flex justify-center">
+        <a href="#about" className="animate-bounce text-sky-400 hover:text-sky-300" aria-label="Scroll down to About section">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </main>
+  );
+}
+
+/* ===== About section ===== */
+function AboutSection() {
+  return (
+    <section id="about" className="min-h-screen flex items-center bg-black text-sky-200">
+      <div className="mx-auto max-w-5xl w-full px-4">
+        <div className="rounded-3xl bg-slate-900/40 p-6 ring-1 ring-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col justify-center">
+            <h2 className="text-3xl font-semibold text-center md:text-left mb-4">About</h2>
+            <p className="text-center md:text-left text-sky-300/80 leading-relaxed max-w-lg mx-auto md:mx-0">
+              I’m a passionate and curious developer diving deep into software engineering, systems, and cybersecurity.
+              <span className="block mt-2 text-sky-400 italic font-semibold">"Always learning, always securing."</span>
+              Starting with a foundational Cert IV in Cyber Security in 2025, I’m building hands-on projects to solidify my skills and prepare for a 2026 internship.
+              My journey is driven by the challenge of securing digital systems and continuous learning.
+              I aim to leverage this knowledge in real-world environments while pursuing a Bachelor of IT (Computer Science major) from 2027 onwards.
+            </p>
+          </div>
+          <div className="flex justify-center md:justify-end items-center">
+            <div className="w-48 h-48 rounded-full bg-gradient-to-tr from-sky-400 to-emerald-400 shadow-lg ring-1 ring-white/20 overflow-hidden">
+              {/* Replace this SVG with your photo if desired */}
+              <svg className="w-full h-full text-white/20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4z"/>
+                <path d="M12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs">
+          <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Cert IV in Cyber Security • 2025 → 2026</span>
+          <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Transition • late 2026 → early 2027</span>
+          <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Bachelor CS • 2027 → 2030</span>
+        </div>
+        
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-sm">
+          <a href="#projects" className="rounded-lg bg-sky-500/10 px-3 py-1.5 text-sky-200 ring-1 ring-sky-400/20 hover:bg-sky-500/15">View projects</a>
+          <a href="#journey" className="rounded-lg bg-white/5 px-3 py-1.5 text-sky-200 ring-1 ring-white/10 hover:bg-white/10">See journey</a>
+          <a href="#skills" className="rounded-lg bg-white/5 px-3 py-1.5 text-sky-200 ring-1 ring-white/10 hover:bg-white/10">Skills</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ===== Skill pill with tiny inline icons ===== */
+function Pill({ label }: { label: string }) {
+  const Icon = () => {
+    switch (label) {
+      case "Python":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 2c3 0 5 2 5 5v2H7V7c0-3 2-5 5-5zM7 11h10v2c0 3-2 5-5 5s-5-2-5-5v-2z"/></svg>;
+      case "JavaScript":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 3h18v18H3zM13 17c0 2-1 3-3 3-1 0-2-.4-3-1l1-2c.5.4 1 .7 1.6.7.7 0 1.1-.3 1.1-1.2V10h2v7zm6 .1c0 1.9-1.3 2.9-3.1 2.9-1.3 0-2.3-.5-3-1.2l1.2-1.8c.5.5 1 .8 1.8.8.6 0 1.1-.3 1.1-1 0-.7-.5-1-1.3-1.4l-.4-.2c-1.2-.5-2.1-1.2-2.1-2.7 0-1.6 1.2-2.6 3-2.6 1.3 0 2.2.5 2.9 1.1l-1.1 1.7c-.5-.4-1-.7-1.7-.7-.6 0-1 .3-1 .9 0 .6.4.9 1.3 1.3l.4.2c1.4.6 2.4 1.2 2.4 2.8z"/></svg>;
+      case "HTML5":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 2l1.7 19.6L12 22l7.3-.4L21 2H3zm14 5l-.2 2.2-4.8 2-.1.1H15L14.6 15 12 16l-2.6-1-.2-2H8l.1 1.7 4 .9 4-1 .6-6.6H7.2L7 6h10z"/></svg>;
+      case "CSS3":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 2l1.7 19.6L12 22l7.3-.4L21 2H3zm12.9 6H9.3l.1 1.6h6.3l-.4 4.5L12 16l-3.3-1.1-.2-2h1.7l.1.9L12 14l1.7-.6.2-2.2H8.2L7.8 6h9.4l-.3 2z"/></svg>;
+      case "PHP":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M4 9h4c2 0 3 1 3 3s-1 3-3 3H6v2H4V9zm2 2v2h2c1 0 1-1 1-1s0-1-1-1H6zm8-2h2v3h2V9h2v8h-2v-3h-2v3h-2V9z"/></svg>;
+      case "SQL":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 3c4.4 0 8 1.6 8 3.5S16.4 10 12 10 4 8.4 4 6.5 7.6 3 12 3zm-8 6v4.5C4 15.4 7.6 17 12 17s8-1.6 8-3.5V9c-1.9 1.4-5 2.2-8 2.2S5.9 10.4 4 9zm0 6v4.5C4 21.4 7.6 23 12 23s8-1.6 8-3.5V15c-1.9 1.4-5 2.2-8 2.2S5.9 16.4 4 15z"/></svg>;
+      case "Linux":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 2c2.2 0 4 1.8 4 4 0 1.3-.6 2.5-1.6 3.2.8 2.1 3.6 3.7 3.6 7.3 0 2.6-2.5 4.5-6 4.5s-6-1.9-6-4.5c0-3.6 2.8-5.2 3.6-7.3C8.6 8.5 8 7.3 8 6c0-2.2 1.8-4 4-4z"/></svg>;
+      case "Bash":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M3 6l9-4 9 4v12l-9 4-9-4V6zm9 9h4v2h-4v-2zm-6-7l4 3-4 3V8z"/></svg>;
+      case "Networking":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z"/></svg>;
+      case "Databases":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 3c4.4 0 8 1.6 8 3.5S16.4 10 12 10 4 8.4 4 6.5 7.6 3 12 3zm-8 6v4.5C4 15.4 7.6 17 12 17s8-1.6 8-3.5V9c-1.9 1.4-5 2.2-8 2.2S5.9 10.4 4 9zm0 6v4.5C4 21.4 7.6 23 12 23s8-1.6 8-3.5V15c-1.9 1.4-5 2.2-8 2.2S5.9 16.4 4 15z"/></svg>;
+      case "Cloud Basics":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M6 16a4 4 0 010-8 5 5 0 09.6-1.2A4 4 0 1117 16H6z"/></svg>;
+      case "Data Structures":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M7 5h4v4H7V5zm6 0h4v4h-4V5zM7 11h4v4H7v-4zm6 0h4v4h-4v-4z"/></svg>;
+      case "Web Security":
+        return <svg viewBox="0 0 24 24" className="size-4"><path fill="currentColor" d="M12 2l7 4v6c0 5-3.1 7.9-7 10-3.9-2.1-7-5-7-10V6l7-4zm0 5a3 3 0 100 6 3 3 0 000-6z"/></svg>;
+      default:
+        return null;
+    }
+  };
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-slate-800/80 to-slate-900/80 px-3 py-1.5 text-sm ring-1 ring-white/10 shadow-sm">
+      <Icon />
+      <span>{label}</span>
+    </span>
+  );
+}
+
+/* ===== Hero with soft aurora background effect ===== */
+
 /* ------------------------ Page ----------------------- */
 export default function Page() {
   useOffsetAnchors();
@@ -383,29 +479,7 @@ export default function Page() {
 
       <Hero />
 
-      {/* About */}
-      <section id="about" className="min-h-screen flex items-center bg-black text-sky-200">
-        <div className="mx-auto max-w-5xl w-full px-4">
-          <div className="rounded-3xl bg-slate-900/40 p-6 ring-1 ring-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
-            <h2 className="text-3xl font-semibold text-center">About</h2>
-            <p className="mt-3 text-center text-sky-300/85">
-              Learning from the ground up across software engineering and systems, with cybersecurity as a developing focus — shipping small projects and documenting the path.
-              Starting with foundational study in 2025, then moving into a Bachelor of IT (Computer Science major).
-              This site tracks progress with hands‑on builds, notes, and a live timeline.
-            </p>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
-              <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Foundations • 2025 → 2026</span>
-              <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Transition • late 2026 → early 2027</span>
-              <span className="rounded-full bg-white/5 px-2.5 py-1 ring-1 ring-white/10">Bachelor CS • 2027 → 2030</span>
-            </div>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-sm">
-              <a href="#projects" className="rounded-lg bg-sky-500/10 px-3 py-1.5 text-sky-200 ring-1 ring-sky-400/20 hover:bg-sky-500/15">View projects</a>
-              <a href="#journey" className="rounded-lg bg-white/5 px-3 py-1.5 text-sky-200 ring-1 ring-white/10 hover:bg-white/10">See journey</a>
-              <a href="#skills" className="rounded-lg bg-white/5 px-3 py-1.5 text-sky-200 ring-1 ring-white/10 hover:bg-white/10">Skills</a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AboutSection />
 
       {/* Projects */}
       <section id="projects" className="min-h-screen flex items-center bg-black text-sky-200">
