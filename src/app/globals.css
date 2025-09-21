@@ -2,8 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root { --radius: 12px; }
-  html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
-  body { color-scheme: dark; }
+/* Smooth scroll for direct hash navigation and keyboard focus */
+html {
+  scroll-behavior: smooth; /* graceful scrolling for browsers that support it */
+}
+
+/* Default top offset so native anchor/focus doesn't hide under the fixed header */
+:root {
+  --nav-offset: 5rem; /* desktop/tablet header height */
+}
+
+/* If your header grows on smaller screens, bump the offset here */
+@media (max-width: 640px) {
+  :root {
+    --nav-offset: 6rem; /* adjust if the mobile header is taller */
+  }
+}
+
+/* Let the UA account for the fixed navbar when using scrollIntoView/focus navigation */
+html {
+  scroll-padding-top: var(--nav-offset);
+}
+
+/* Optional: consistent focus visibility when jumping to headings/sections */
+:target {
+  outline: none;
+}
+
+/* Optional: improve scroll snapping if added later (harmless if unused) */
+:root {
+  --snap-type: proximity;
 }
