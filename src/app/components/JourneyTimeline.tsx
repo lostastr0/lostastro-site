@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 type Phase = {
   id: string;
@@ -15,27 +16,27 @@ function phaseStatus(startISO: string, endISO: string, now = Date.now()) {
   if (now < start) {
     const daysToStart = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
     if (daysToStart <= 30) {
-      return { label: `Starting soon • ${daysToStart}d`, dot: "bg-yellow-400" };
+      return { label: `Starting soon • ${daysToStart}d`, dot: "bg-amber-400", gradient: "from-amber-400 to-orange-500" };
     }
-    return { label: "Scheduled", dot: "bg-gray-500" };
+    return { label: "Scheduled", dot: "bg-slate-500", gradient: "from-slate-400 to-slate-600" };
   }
   if (now >= end) {
-    return { label: "Completed", dot: "bg-green-500" };
+    return { label: "Completed", dot: "bg-emerald-500", gradient: "from-emerald-400 to-green-600" };
   }
-  return { label: "In progress", dot: "bg-blue-500 animate-pulse" };
+  return { label: "In progress", dot: "bg-sky-500 animate-pulse", gradient: "from-sky-400 to-blue-600" };
 }
 
 function fmtCountdown(endISO: string) {
   const now = Date.now();
   const end = new Date(endISO).getTime();
   const diff = end - now;
-  if (diff <= 0) return "Done 🎉";
+  if (diff <= 0) return "🎉 Complete";
   const d = Math.floor(diff / (1000 * 60 * 60 * 24));
   const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const m = Math.floor((diff / (1000 * 60)) % 60);
-  if (d > 30) return `${d} days left`;
-  if (d > 0) return `${d}d ${h}h`;
-  return `${h}h ${m}m`;
+  if (d > 30) return `${d} days remaining`;
+  if (d > 0) return `${d}d ${h}h left`;
+  return `${h}h ${m}m left`;
 }
 
 function fmtDateTime(d: Date) {
@@ -69,6 +70,23 @@ const phases: Phase[] = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 export default function Timeline() {
   const [tick, setTick] = useState(Date.now());
   useEffect(() => {
@@ -77,81 +95,249 @@ export default function Timeline() {
   }, []);
 
   return (
-    <div className="relative mx-auto max-w-5xl px-4 pt-16 pb-0">
-      {/* SPINE: always full length, perfectly centered with dot column */}
-      <div className="absolute top-0 bottom-0 left-8 w-px bg-gray-700/50 z-0" />
-      <ol className="space-y-16 relative z-10">
-        {phases.map((phase, idx) => {
-          const status = phaseStatus(phase.start, phase.end, tick);
-          const start = new Date(phase.start).getTime();
-          const end = new Date(phase.end).getTime();
-          const progress = tick <= start ? 0 : tick >= end ? 100 : ((tick - start) / (end - start)) * 100;
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-900/10 via-transparent to-transparent" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-sky-500/5 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
+      
+      <motion.div
+        className="relative z-10 max-w-6xl mx-auto px-6 py-16"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* ✅ KEEP: New Beautiful Title */}
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="relative">
+              <div className="w-3 h-3 bg-sky-400 rounded-full animate-ping absolute" />
+              <div className="w-3 h-3 bg-sky-400 rounded-full" />
+            </div>
+            <span className="text-sky-400 font-medium tracking-wide">Live Educational Timeline</span>
+          </div>
+          
+          <h1 className="text-5xl lg:text-7xl font-black mb-4 tracking-tight">
+            <span className="bg-gradient-to-r from-white via-sky-100 to-sky-200 bg-clip-text text-transparent">
+              Journey
+            </span>
+            <span className="text-slate-300 mx-4">&</span>
+            <span className="bg-gradient-to-r from-sky-300 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              Plan
+            </span>
+          </h1>
+          
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Interactive timeline showcasing educational milestones with <span className="text-sky-400 font-semibold">real-time progress</span> tracking.
+          </p>
+        </motion.div>
 
-          return (
-            <li key={phase.id} className="flex relative">
-              {/* Dot column, always centered with spine */}
-              <div className="flex flex-col items-center w-8 mr-8 flex-shrink-0 z-10">
-                <span
-                  className={`block w-4 h-4 rounded-full ${status.dot} ring-2 ring-white shadow-md`}
-                  title={`${phase.title} status: ${status.label}`}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="rounded-2xl bg-gray-800/90 p-6 sm:p-8 ring-1 ring-gray-700/70 shadow-lg shadow-black/20 space-y-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg sm:text-xl font-semibold text-white leading-relaxed">{phase.title}</h3>
-                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                      <span className="text-sm text-gray-400">{new Date(phase.start).toLocaleDateString("en-AU")} — {new Date(phase.end).toLocaleDateString("en-AU")}</span>
-                      <span className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-3 py-1.5 text-sm text-gray-300 ring-1 ring-gray-600 shadow">
-                        <span className={`w-2 h-2 rounded-full ${status.dot}`} />
-                        <span>{status.label}</span>
+        {/* Timeline Cards */}
+        <div className="grid gap-8 lg:gap-12">
+          {phases.map((phase, idx) => {
+            const status = phaseStatus(phase.start, phase.end, tick);
+            const start = new Date(phase.start).getTime();
+            const end = new Date(phase.end).getTime();
+            const progress = tick <= start ? 0 : tick >= end ? 100 : ((tick - start) / (end - start)) * 100;
+
+            return (
+              <motion.div
+                key={phase.id}
+                variants={cardVariants}
+                className="group"
+              >
+                <motion.div
+                  className="relative bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 lg:p-10 shadow-2xl"
+                  whileHover={{ 
+                    y: -8,
+                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" 
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  {/* Floating Status Indicator */}
+                  <motion.div
+                    className={`absolute -top-4 -right-4 px-4 py-2 rounded-2xl bg-gradient-to-r ${status.gradient} text-white font-semibold shadow-lg`}
+                    initial={{ scale: 0, rotate: 45 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.5 + idx * 0.2, type: "spring", stiffness: 200 }}
+                  >
+                    {status.label}
+                  </motion.div>
+
+                  {/* Main Content */}
+                  <div className="space-y-6">
+                    {/* Course Title */}
+                    <h3 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent leading-tight">
+                      {phase.title}
+                    </h3>
+                    
+                    {/* Course Info */}
+                    <div className="flex items-center gap-2 text-slate-400">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span className="text-lg font-medium">
+                        {new Date(phase.start).toLocaleDateString("en-AU")} → {new Date(phase.end).toLocaleDateString("en-AU")}
                       </span>
                     </div>
-                  </div>
-                  {/* Time + Countdown */}
-                  <div className="flex justify-between items-center mb-6 text-gray-400 text-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-                      <span className="text-xs sm:text-sm leading-relaxed">{fmtDateTime(new Date(tick))}</span>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-gray-900 text-gray-200 ring-1 ring-gray-700 text-xs sm:text-sm shadow-sm">
-                      ⏳ {fmtCountdown(phase.end)}
-                    </span>
-                  </div>
-                  {/* Progress Bar + Markers */}
-                  <div className="relative h-24">
-                    <div className="absolute inset-x-6 top-8 h-2.5 rounded-full bg-gray-700/60 shadow-inner">
-                      <div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 shadow-md" style={{ width: `${progress}%` }} />
-                    </div>
-                    {phase.markers?.map((marker, i, arr) => {
-                      const pos = arr.length <= 1 ? 0.5 : i / (arr.length - 1);
-                      const left = `${pos * 100}%`;
-                      const markerTime = new Date(marker.atISO + "T00:00:00").getTime();
-                      const reached = tick >= markerTime;
-                      return (
-                        <div
-                          key={marker.label}
-                          className="absolute flex flex-col items-center"
-                          style={{
-                            left,
-                            top: "1.5rem",
-                            transform: "translateX(-50%)"
-                          }}
-                          title={`${marker.label} - ${new Date(marker.atISO).toLocaleDateString("en-AU")}`}
-                        >
-                          <div className={`w-5 h-5 rounded-full border-2 shadow ${reached ? "bg-blue-500 ring-2 ring-blue-300" : "bg-gray-500 ring-2 ring-gray-400"} transition-transform hover:scale-110`} />
-                          <span className={`mt-3 text-xs text-center leading-snug ${reached ? "text-gray-200" : "text-gray-500"}`}>{marker.label}</span>
-                          <span className="text-[11px] text-gray-400 mt-1">{new Date(marker.atISO).toLocaleDateString("en-AU")}</span>
+
+                    {/* Live Stats Bar */}
+                    <motion.div 
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-slate-800/60 to-slate-700/60 border border-slate-600/30"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" />
+                          <span className="text-emerald-400 font-medium">LIVE</span>
                         </div>
-                      );
-                    })}
+                        <div className="h-4 w-px bg-slate-600" />
+                        <span className="text-slate-300 font-mono text-lg tracking-wider">
+                          {fmtDateTime(new Date(tick))}
+                        </span>
+                      </div>
+                      
+                      <motion.div
+                        className="inline-flex items-center gap-3 px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600/30 to-purple-600/30 border border-blue-500/40"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <span className="text-2xl">⏰</span>
+                        <span className="font-bold text-sky-300 text-lg">
+                          {fmtCountdown(phase.end)}
+                        </span>
+                      </motion.div>
+                    </motion.div>
+
+                    {/* 🔧 FIXED: Clean Progress Section */}
+                    <div className="space-y-6">
+                      {/* Progress Bar - Clean and Simple */}
+                      <div className="relative">
+                        <div className="h-3 bg-slate-700 rounded-full overflow-hidden shadow-inner">
+                          <motion.div
+                            className="h-full bg-gradient-to-r from-sky-400 via-blue-500 to-purple-600 rounded-full relative"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 2, ease: "easeOut" }}
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent rounded-full" />
+                          </motion.div>
+                        </div>
+                      </div>
+
+                      {/* 🎯 FINAL: Start dots pushed EVEN MORE LEFT for perfect alignment */}
+                      <div className="relative" style={{ marginTop: '1.4rem' }}>
+                        <div className="absolute left-0 right-0 top-0">
+                          {phase.markers?.map((marker, i, arr) => {
+                            const markerTime = new Date(marker.atISO + "T00:00:00").getTime();
+                            const reached = tick >= markerTime;
+
+                            // 🎯 FINAL POSITIONING: Start dots pushed EVEN MORE LEFT
+                            let position;
+                            let transformValue;
+                            
+                            if (arr.length === 3) {
+                              // 3-marker timeline (Cert IV): Start, Halfway, Complete
+                              if (i === 0) {
+                                // Start: EVEN MORE LEFT for perfect alignment
+                                position = -2.5; // Was -1, now -2.5 - even further left!
+                                transformValue = "translateX(0%)";
+                              } else if (i === 1) {
+                                // Halfway: Perfect center
+                                position = 47.5; // True middle
+                                transformValue = "translateX(-50%)";
+                              } else {
+                                // Complete: Keep good position
+                                position = 95;
+                                transformValue = "translateX(-100%)";
+                              }
+                            } else if (arr.length === 4) {
+                              // 4-marker timeline (Bachelor): Start, Year 1, Year 2, Graduation
+                              if (i === 0) {
+                                // Start: EVEN MORE LEFT for perfect alignment
+                                position = -2.5; // Was -1, now -2.5 - even further left!
+                                transformValue = "translateX(0%)";
+                              } else if (i === 1) {
+                                // Year 1 Complete: Spaced right
+                                position = 30; // Better spacing
+                                transformValue = "translateX(-50%)";
+                              } else if (i === 2) {
+                                // Year 2 Complete: Spaced right  
+                                position = 63; // Better spacing
+                                transformValue = "translateX(-50%)";
+                              } else {
+                                // Graduation: Keep good position
+                                position = 95;
+                                transformValue = "translateX(-100%)";
+                              }
+                            } else {
+                              // Fallback for other configurations
+                              position = (i / (arr.length - 1)) * 100;
+                              transformValue = "translateX(-50%)";
+                            }
+                            
+                            return (
+                              <motion.div
+                                key={marker.label}
+                                className="absolute flex flex-col items-center cursor-pointer"
+                                style={{
+                                  left: `${position}%`,
+                                  top: "-2.8rem", // Higher up
+                                  transform: transformValue
+                                }}
+                                initial={{ opacity: 0, scale: 0, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                transition={{ delay: 1 + i * 0.2, type: "spring", stiffness: 200 }}
+                                whileHover={{ scale: 1.1, y: -5 }}
+                              >
+                                {/* Milestone Dot */}
+                                <div className="relative">
+                                  <div
+                                    className={`w-8 h-8 rounded-full border-4 transition-all duration-500 ${
+                                      reached
+                                        ? "bg-gradient-to-br from-sky-400 to-blue-600 border-white shadow-lg shadow-sky-400/50"
+                                        : "bg-slate-600 border-slate-400 shadow-md"
+                                    }`}
+                                  />
+                                  {reached && (
+                                    <motion.div
+                                      className="absolute inset-0 rounded-full bg-sky-400 opacity-30"
+                                      animate={{ scale: [1, 1.3, 1] }}
+                                      transition={{ duration: 2, repeat: Infinity }}
+                                    />
+                                  )}
+                                </div>
+
+                                {/* Milestone Info */}
+                                <div className="mt-3 text-center space-y-1">
+                                  <span
+                                    className={`text-sm font-bold transition-colors duration-300 block ${
+                                      reached ? "text-sky-300" : "text-slate-400"
+                                    }`}
+                                  >
+                                    {marker.label}
+                                  </span>
+                                  <div className="text-xs text-slate-500 font-mono">
+                                    {new Date(marker.atISO).toLocaleDateString("en-AU")}
+                                  </div>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </li>
-          );
-        })}
-      </ol>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
     </div>
   );
 }
