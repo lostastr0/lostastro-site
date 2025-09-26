@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,7 +21,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  // GitHub Pages URL format: https://username.github.io/repository-name
+  // GitHub Pages URL format: [https://username.github.io/repository-name](https://username.github.io/repository-name)
   // For now, using localhost - will auto-update to GitHub Pages URL when deployed
   metadataBase: new URL(
     process.env.NODE_ENV === 'production' 
@@ -130,6 +131,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white overflow-x-hidden`}
         suppressHydrationWarning={true}
       >
+        <ScrollProgressBar />
         {children}
       </body>
     </html>

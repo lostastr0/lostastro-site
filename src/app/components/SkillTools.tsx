@@ -3,18 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, Variants } from "framer-motion";
 
-// 🔥 GUARANTEED WORKING REAL TECH LOGOS
-// These specific Si icons are proven to work in latest react-icons
+// Real tech logos that work
 import { 
-  SiPython,    // ✅ Real Python snake - WORKS
-  SiReact,     // ✅ Real React atom - WORKS  
-  SiGithub,    // ✅ Real GitHub octocat - WORKS
-  SiDocker,    // ✅ Real Docker whale - WORKS
-  SiMysql,     // ✅ Real MySQL dolphin - WORKS
-  SiLinux      // ✅ Real Linux penguin - WORKS
+  SiPython,
+  SiReact,     
+  SiGithub,
+  SiDocker,
+  SiMysql,
+  SiLinux
 } from 'react-icons/si';
 
-// 🎯 RELIABLE FONTAWESOME FALLBACKS
+// Reliable FontAwesome fallbacks
 import { 
   FaJs, FaCss3Alt, FaCode, FaTerminal, FaLock, FaShieldAlt,
   FaNetworkWired, FaSearch, FaBug, FaCoffee, FaDatabase,
@@ -27,7 +26,7 @@ type Skill = {
   description: string;
   level?: number;
   category?: "cybersecurity" | "development" | "learning" | "tool";
-  yearsExperience?: string;
+  status: string;
 };
 
 type SkillToolsProps = {
@@ -35,198 +34,187 @@ type SkillToolsProps = {
   learningNext: Skill[];
 };
 
-// ================================
-// 📊 PERFECT MIX: REAL LOGOS + RELIABLE FALLBACKS
-// ================================
-
+// HONEST BEGINNER-LEVEL SKILLS
 const currentSkills: Skill[] = [
-  // 🛡️ CYBERSECURITY SKILLS
+  // LEARNING FOUNDATIONS
   {
     name: "Python",
-    Icon: SiPython, // 🐍 REAL Python snake logo!
-    description: "Password strength analyzers, security automation scripts",
-    level: 60,
-    category: "cybersecurity",
-    yearsExperience: "8 months"
-  },
-
-  // 💻 DEVELOPMENT SKILLS
-  {
-    name: "React",
-    Icon: SiReact, // ⚛️ REAL React atom logo!
-    description: "Component-based UI, hooks, state management - built this portfolio",
-    level: 45,
+    Icon: SiPython,
+    description: "Learning basics - variables, loops, simple programs",
+    level: 15,
     category: "development",
-    yearsExperience: "2 Years"
+    status: "Learning"
   },
 
   {
-    name: "TypeScript",
-    Icon: FaJs, // 📜 JavaScript logo (represents TypeScript)
-    description: "Type safety, interfaces - used throughout portfolio",
-    level: 40,
+    name: "HTML & CSS",
+    Icon: FaCss3Alt,
+    description: "Basic web structure and styling - used in this portfolio",
+    level: 25,
     category: "development",
-    yearsExperience: "1 months"
+    status: "Learning"
   },
 
   {
-    name: "Tailwind CSS",
-    Icon: FaCss3Alt, // 🎨 CSS3 logo (reliable)
-    description: "Utility-first CSS, animations - styled this entire site",
-    level: 50,
+    name: "React Basics",
+    Icon: SiReact,
+    description: "Following tutorials, building this portfolio as first project",
+    level: 20,
     category: "development",
-    yearsExperience: "1 months"
+    status: "Exploring"
   },
 
-  {
-    name: "Next.js",
-    Icon: SiReact, // ⚛️ Using React logo for Next.js (React-based)
-    description: "React framework, routing - powering this portfolio",
-    level: 35,
-    category: "development",
-    yearsExperience: "1 months"
-  },
-
-  // 🔧 TOOLS & PLATFORMS
   {
     name: "VS Code",
-    Icon: FaCode, // 💻 Code icon (reliable)
-    description: "Primary code editor with extensions and customizations",
-    level: 85,
+    Icon: FaCode,
+    description: "Getting comfortable with editor, extensions, and shortcuts",
+    level: 40,
     category: "tool",
-    yearsExperience: "4 Years"
+    status: "Using"
   },
 
   {
     name: "Git & GitHub",
-    Icon: SiGithub, // 🐙 REAL GitHub octocat logo!
-    description: "Version control, repositories - hosting this portfolio",
-    level: 55,
+    Icon: SiGithub,
+    description: "Basic version control - pushing code, repositories",
+    level: 25,
     category: "tool", 
-    yearsExperience: "4 Years"
+    status: "Learning"
   },
 
-  // 📚 LEARNING & SOFT SKILLS
+  // SOFT SKILLS & MINDSET
   {
     name: "Problem Solving",
-    Icon: FaPuzzlePiece, // 🧩 Perfect puzzle piece
-    description: "Breaking down complex problems, debugging, research skills",
-    level: 75,
+    Icon: FaPuzzlePiece,
+    description: "Breaking down problems, researching solutions online",
+    level: 35,
     category: "learning",
-    yearsExperience: "Ongoing"
+    status: "Developing"
   },
 
   {
     name: "Self-Learning", 
-    Icon: FaBookOpen, // 📖 Perfect open book
-    description: "Learning from documentation, tutorials, online resources",
-    level: 80,
+    Icon: FaBookOpen,
+    description: "Using YouTube, documentation, online courses to learn",
+    level: 45,
     category: "learning",
-    yearsExperience: "1+ year"
+    status: "Active"
+  },
+
+  // CYBERSECURITY PREP
+  {
+    name: "Security Concepts",
+    Icon: FaLock,
+    description: "Researching cybersecurity basics, preparing for Cert IV",
+    level: 10,
+    category: "cybersecurity",
+    status: "Researching"
   }
 ];
 
 const learningNext: Skill[] = [
-  // 🎯 CYBERSECURITY - STILL DEVELOPING
+  // CYBERSECURITY FOUNDATION (for upcoming course)
   {
     name: "Password Security",
-    Icon: FaLock, // 🔒 Perfect lock icon
-    description: "Strength analysis, common attacks, security best practices",
-    category: "cybersecurity"
+    Icon: FaLock,
+    description: "Will learn in Cert IV - password attacks, strength analysis",
+    category: "cybersecurity",
+    status: "Oct 2025"
   },
 
   {
     name: "Kali Linux",
-    Icon: SiLinux, // 🐧 REAL Linux penguin logo!
-    description: "Basic penetration testing environment, command line tools",
-    category: "cybersecurity"
+    Icon: SiLinux,
+    description: "Cybersecurity toolkit - will explore in course",
+    category: "cybersecurity",
+    status: "Oct 2025"
   },
 
   {
     name: "Network Basics",
-    Icon: FaNetworkWired, // 🌐 Perfect network icon
-    description: "TCP/IP, ports, protocols, basic networking concepts",
-    category: "cybersecurity"
+    Icon: FaNetworkWired,
+    description: "TCP/IP, networking fundamentals for security",
+    category: "cybersecurity",
+    status: "Oct 2025"
   },
 
-  // 🔧 TOOLS - STILL LEARNING
   {
     name: "Terminal/Bash",
-    Icon: FaTerminal, // ⌨️ Perfect terminal icon
-    description: "Command line navigation, basic scripting, file operations",
-    category: "tool"
+    Icon: FaTerminal,
+    description: "Command line skills for cybersecurity work",
+    category: "tool",
+    status: "Oct 2025"
+  },
+
+  // PROGRAMMING EXPANSION
+  {
+    name: "JavaScript",
+    Icon: FaJs,
+    description: "Web interactivity - logical next step after HTML/CSS",
+    category: "development",
+    status: "Soon"
   },
 
   {
-    name: "VirtualBox/VMware",
-    Icon: FaBox, // 📦 Perfect box for VMs
-    description: "Running Kali Linux VMs, testing environments",
-    category: "tool"
+    name: "Python Projects",
+    Icon: SiPython,
+    description: "Building actual programs beyond basic syntax",
+    category: "development",
+    status: "Next"
   },
 
-  // 🚀 FUTURE CYBERSECURITY EXPANSION
+  // CYBERSECURITY TOOLS (future learning)
   {
     name: "Nmap",
-    Icon: FaSearch, // 🔍 Perfect search for network discovery
-    description: "Network discovery and security auditing tool",
-    category: "cybersecurity"
+    Icon: FaSearch,
+    description: "Network discovery tool - will learn in course",
+    category: "cybersecurity",
+    status: "Future"
   },
 
   {
     name: "Wireshark",
-    Icon: FaNetworkWired, // 🌐 Network analysis
-    description: "Network protocol analyzer, packet inspection",
-    category: "cybersecurity"
-  },
-
-  {
-    name: "Metasploit",
-    Icon: FaShieldAlt, // 🛡️ Security framework shield
-    description: "Penetration testing framework (ethical hacking only)",
-    category: "cybersecurity"
+    Icon: FaNetworkWired,
+    description: "Network packet analysis for security",
+    category: "cybersecurity",
+    status: "Future"
   },
 
   {
     name: "Burp Suite",
-    Icon: FaBug, // 🐛 Perfect bug for vulnerability testing
-    description: "Web application security testing platform",
-    category: "cybersecurity"
+    Icon: FaBug,
+    description: "Web application security testing",
+    category: "cybersecurity",
+    status: "Future"
   },
 
-  // 💻 PROGRAMMING EXPANSION  
+  // COMPUTER SCIENCE PREP
   {
     name: "C/C++",
-    Icon: FaCode, // 💻 Code icon
-    description: "Low-level programming for computer science degree prep",
-    category: "development"
+    Icon: FaCode,
+    description: "Will need for Computer Science degree",
+    category: "development",
+    status: "2027"
   },
 
   {
     name: "Java",
-    Icon: FaCoffee, // ☕ Classic coffee for Java
-    description: "Object-oriented programming fundamentals",
-    category: "development"
+    Icon: FaCoffee,
+    description: "Object-oriented programming for CS studies",
+    category: "development",
+    status: "2027"
   },
 
   {
     name: "SQL",
-    Icon: SiMysql, // 🗄️ REAL MySQL database logo!
-    description: "Database management, queries, data manipulation",
-    category: "development"
-  },
-
-  {
-    name: "Docker",
-    Icon: SiDocker, // 🐳 REAL Docker whale logo!
-    description: "Containerization for development environments", 
-    category: "tool"
+    Icon: SiMysql,
+    description: "Database fundamentals for development",
+    category: "development",
+    status: "Future"
   }
 ];
 
-// ================================
-// 🎨 SMOOTH ANIMATION VARIANTS
-// ================================
-
+// Animation variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -251,18 +239,14 @@ const skillCardVariants: Variants = {
     }
   }),
   hover: {
-    scale: 1.1,
-    y: -8,
+    scale: 1.05,
+    y: -5,
     transition: {
       duration: 0.2,
       ease: "easeInOut"
     }
   }
 };
-
-// ================================
-// 🏗️ MAIN COMPONENT
-// ================================
 
 export default function SkillTools({ skills = currentSkills, learningNext: learningNextProp = learningNext }: SkillToolsProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -317,22 +301,18 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl w-full">
-        {/* Enhanced Header */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <span className="text-4xl">⚡</span>
-            <h2 className="text-4xl xl:text-5xl font-extrabold bg-gradient-to-r from-sky-300 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              Skills & Tools
-            </h2>
-            <span className="text-4xl">🚀</span>
-          </div>
+          <h2 className="text-4xl xl:text-5xl font-extrabold bg-gradient-to-r from-sky-300 via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-6">
+            Skills & Tools
+          </h2>
           <p className="text-xl text-sky-300/80 max-w-3xl mx-auto">
-            My current <span className="text-red-400">cybersecurity</span> and <span className="text-blue-400">development</span> capabilities
+            What I'm currently <span className="text-green-400">learning</span> and planning to <span className="text-blue-400">explore</span> next
           </p>
         </motion.div>
 
@@ -367,7 +347,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
           ))}
         </motion.div>
 
-        {/* Current Skills Grid */}
+        {/* Current Learning */}
         <motion.div 
           className="mb-20"
           variants={containerVariants}
@@ -375,8 +355,8 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
           animate={visible ? "visible" : "hidden"}
         >
           <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-            <span className="text-green-400">✅</span>
-            Current Skills
+            <span className="text-green-400">📚</span>
+            Currently Learning
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredSkills.map((skill, index) => (
@@ -396,7 +376,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                     </div>
                   )}
 
-                  {/* 🔥 REAL TECH LOGOS + RELIABLE FALLBACKS */}
+                  {/* Icon */}
                   <div className="flex flex-col items-center mb-4">
                     <div className="relative mb-3">
                       <skill.Icon className="w-12 h-12 text-white group-hover:scale-110 transition-transform duration-300" />
@@ -405,11 +385,11 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                     <h4 className="text-lg font-semibold text-white text-center">{skill.name}</h4>
                   </div>
 
-                  {/* Progress Bar Section */}
+                  {/* Honest Progress Bar */}
                   {skill.level !== undefined && (
                     <div className="mb-4">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs text-gray-400">Proficiency</span>
+                        <span className="text-xs text-gray-400">Learning Progress</span>
                         <motion.span 
                           className="text-xs text-sky-400 font-medium"
                           initial={{ opacity: 0 }}
@@ -421,7 +401,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                       </div>
                       <div className="h-2 bg-gray-700/50 rounded-full overflow-hidden">
                         <motion.div
-                          className={`h-full bg-gradient-to-r ${getCategoryColor(skill.category)} rounded-full relative`}
+                          className={`h-full bg-gradient-to-r ${getCategoryColor(skill.category)} rounded-full`}
                           initial={{ width: 0, opacity: 0 }}
                           animate={visible ? { 
                             width: `${skill.level}%`, 
@@ -429,7 +409,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                           } : {}}
                           transition={{
                             width: {
-                              duration: 1.8,
+                              duration: 1.5,
                               ease: "easeOut",
                               delay: 0.8 + index * 0.1
                             },
@@ -438,30 +418,17 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                               delay: 0.6 + index * 0.1
                             }
                           }}
-                        >
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
-                            initial={{ x: "-100%" }}
-                            animate={visible ? { x: "100%" } : {}}
-                            transition={{ 
-                              delay: 1.0 + index * 0.1,
-                              duration: 1.2,
-                              ease: "easeInOut"
-                            }}
-                          />
-                        </motion.div>
+                        />
                       </div>
                     </div>
                   )}
 
-                  {/* Experience Badge */}
-                  {skill.yearsExperience && (
-                    <div className="mb-4">
-                      <span className="px-3 py-1 bg-sky-900/30 text-sky-300 rounded-full text-xs">
-                        {skill.yearsExperience}
-                      </span>
-                    </div>
-                  )}
+                  {/* Status Badge */}
+                  <div className="mb-4">
+                    <span className="px-3 py-1 bg-sky-900/30 text-sky-300 rounded-full text-xs">
+                      {skill.status}
+                    </span>
+                  </div>
 
                   {/* Description Tooltip */}
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
@@ -502,10 +469,10 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                   
                   {/* Learning Badge */}
                   <div className="absolute top-3 right-3 px-2 py-1 bg-blue-900/30 text-blue-300 rounded-full text-xs font-medium">
-                    📚 Soon
+                    {skill.status}
                   </div>
 
-                  {/* 🔥 REAL TECH LOGOS + RELIABLE FALLBACKS */}
+                  {/* Icon */}
                   <div className="flex flex-col items-center mb-4">
                     <div className="relative mb-3">
                       <skill.Icon className="w-12 h-12 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
@@ -517,7 +484,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                   {/* Learning Status */}
                   <div className="text-center">
                     <span className="px-3 py-1 bg-blue-900/20 text-blue-400 rounded-full text-xs">
-                      🚀 Coming Soon
+                      Planned
                     </span>
                   </div>
 

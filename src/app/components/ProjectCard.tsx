@@ -20,7 +20,7 @@ type Project = {
 };
 
 const projects: Project[] = [
-  // YOUR REAL PROJECT - Featured prominently
+  // 🎉 COMPLETED PROJECTS - Both real and finished
   {
     id: "password-strength-checker",
     title: "Password Strength Analyzer",
@@ -35,19 +35,20 @@ const projects: Project[] = [
     component: PasswordCard
   },
 
-  // REALISTIC PLACEHOLDERS - Future learning projects
   {
     id: "portfolio-site",
-    title: "Personal Portfolio Website",
-    description: "This interactive portfolio showcasing my cybersecurity and development journey",
-    longDescription: "A modern, responsive portfolio website built with Next.js featuring animated components, project showcases, and interactive elements. Currently in development with plans for advanced animations and dynamic content.",
+    title: "Interactive Portfolio Website",
+    description: "Modern, responsive portfolio showcasing my cybersecurity and development journey",
+    longDescription: "A professional portfolio website built with Next.js featuring animated components, interactive timeline with real-time progress tracking, mobile-optimized design, and smooth animations. Includes live project demos, responsive design patterns, and advanced UI/UX elements. The site demonstrates modern web development practices including TypeScript, Tailwind CSS, Framer Motion animations, and mobile-first responsive design.",
     category: "development", 
-    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    status: "in-progress",
+    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive Design", "Interactive Animations"],
+    demoUrl: "https://yourportfolio.com", // Add your actual URL
+    status: "completed",
     featured: true,
-    isReal: false
+    isReal: true
   },
 
+  // 🚧 FUTURE LEARNING PROJECTS
   {
     id: "network-scanner-basics",
     title: "Basic Network Scanner",
@@ -218,7 +219,7 @@ export default function ProjectCard() {
         </div>
       </motion.div>
 
-      {/* Real Projects Section */}
+      {/* Completed Projects Section - Now with 2 projects! */}
       {realProjects.length > 0 && (
         <motion.div 
           className="w-full mb-12"
@@ -228,7 +229,7 @@ export default function ProjectCard() {
         >
           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
             <span className="text-green-400">✅</span>
-            Completed Projects
+            Completed Projects ({realProjects.length})
           </h3>
           <motion.div 
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
@@ -292,7 +293,8 @@ export default function ProjectCard() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <span>🚀</span> Try Demo
+                        <span>{project.component ? '🚀' : '🌐'}</span> 
+                        {project.component ? 'Try Demo' : 'View Site'}
                       </motion.button>
                       {project.githubUrl && (
                         <motion.a
@@ -307,6 +309,19 @@ export default function ProjectCard() {
                           <span>📂</span> Code
                         </motion.a>
                       )}
+                      {project.demoUrl && (
+                        <motion.a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-2 px-4 py-2 bg-blue-800 text-blue-300 rounded-lg hover:bg-blue-700 transition-all duration-300"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <span>🌐</span> Visit
+                        </motion.a>
+                      )}
                     </div>
                   </div>
 
@@ -319,7 +334,7 @@ export default function ProjectCard() {
         </motion.div>
       )}
 
-      {/* Planned/In-Progress Projects */}
+      {/* Future Learning Projects */}
       <motion.div 
         className="w-full"
         initial={{ opacity: 0 }}
@@ -328,7 +343,7 @@ export default function ProjectCard() {
       >
         <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
           <span className="text-blue-400">🚧</span>
-          Learning Roadmap
+          Learning Roadmap ({placeholderProjects.length} planned)
         </h3>
         
         <motion.div 
@@ -471,7 +486,10 @@ export default function ProjectCard() {
                   >
                     <h5 className="text-md font-semibold text-green-300 mb-2">Development Journey</h5>
                     <p className="text-green-200 text-sm">
-                      🐍 Originally developed in Python as a command-line tool for learning cybersecurity fundamentals, then enhanced and converted to React/TypeScript to create this interactive web version with real-time feedback and visual indicators.
+                      {selectedProject.id === 'password-strength-checker' 
+                        ? '🐍 Originally developed in Python as a command-line tool for learning cybersecurity fundamentals, then enhanced and converted to React/TypeScript to create this interactive web version with real-time feedback and visual indicators.'
+                        : '🚀 Built using modern web development practices with Next.js, featuring responsive design, interactive animations, and optimized performance. Demonstrates proficiency in TypeScript, Tailwind CSS, and advanced React patterns.'
+                      }
                     </p>
                   </motion.div>
                 )}
@@ -503,7 +521,7 @@ export default function ProjectCard() {
                   </div>
                 </motion.div>
 
-                {/* Live Demo Component (for real projects) */}
+                {/* Live Demo Component (for projects with components) */}
                 {selectedProject.isReal && selectedProject.component && (
                   <motion.div 
                     className="mb-8"
@@ -539,6 +557,18 @@ export default function ProjectCard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
+                  {selectedProject.demoUrl && (
+                    <motion.a
+                      href={selectedProject.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span>🌐</span> Visit Live Site
+                    </motion.a>
+                  )}
                   {selectedProject.githubUrl && (
                     <motion.a
                       href={selectedProject.githubUrl}

@@ -17,12 +17,12 @@ export default function ExperienceEducation() {
             Learning & Background
           </h2>
           <p className="text-xl text-sky-300/80 max-w-3xl mx-auto">
-            My current learning process and the journey that sparked my passion for <span className="text-red-400">cybersecurity</span>
+            Building my path to <span className="text-cyan-400">Computer Science</span> through hands-on learning and <span className="text-blue-400">strategic education</span>
           </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Current Learning */}
+          {/* Current Learning Focus */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -31,17 +31,17 @@ export default function ExperienceEducation() {
           >
             <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
               <span className="text-green-400">📚</span>
-              Currently Learning
+              Current Learning Focus
             </h3>
             
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400 mt-2 animate-pulse"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-blue-400 mt-2 animate-pulse"></div>
                 <div>
-                  <h4 className="text-yellow-300 font-semibold">Python Security Tools</h4>
-                  <p className="text-gray-300 text-sm mb-2">Building password analyzers and security automation scripts</p>
+                  <h4 className="text-blue-300 font-semibold">Programming Foundations</h4>
+                  <p className="text-gray-300 text-sm mb-2">Learning Python basics, problem-solving logic, and coding fundamentals</p>
                   <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" style={{width: '60%'}}></div>
+                    <div className="bg-gradient-to-r from-blue-400 to-cyan-500 h-2 rounded-full" style={{width: '25%'}}></div>
                   </div>
                 </div>
               </div>
@@ -49,10 +49,10 @@ export default function ExperienceEducation() {
               <div className="flex items-start gap-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 mt-2 animate-pulse"></div>
                 <div>
-                  <h4 className="text-cyan-300 font-semibold">React Development</h4>
-                  <p className="text-gray-300 text-sm mb-2">Building interactive web applications like this portfolio</p>
+                  <h4 className="text-cyan-300 font-semibold">Web Development Basics</h4>
+                  <p className="text-gray-300 text-sm mb-2">HTML, CSS fundamentals and exploring modern frameworks like React</p>
                   <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-cyan-400 to-blue-500 h-2 rounded-full" style={{width: '45%'}}></div>
+                    <div className="bg-gradient-to-r from-cyan-400 to-blue-500 h-2 rounded-full" style={{width: '20%'}}></div>
                   </div>
                 </div>
               </div>
@@ -60,17 +60,17 @@ export default function ExperienceEducation() {
               <div className="flex items-start gap-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-purple-400 mt-2 animate-pulse"></div>
                 <div>
-                  <h4 className="text-purple-300 font-semibold">Kali Linux & Tools</h4>
-                  <p className="text-gray-300 text-sm mb-2">Setting up VM environments and learning penetration testing basics</p>
+                  <h4 className="text-purple-300 font-semibold">Cybersecurity Preparation</h4>
+                  <p className="text-gray-300 text-sm mb-2">Researching security concepts, preparing for Cert IV starting Oct 2025</p>
                   <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full" style={{width: '25%'}}></div>
+                    <div className="bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full" style={{width: '15%'}}></div>
                   </div>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Background Story */}
+          {/* My Learning Philosophy */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -78,41 +78,48 @@ export default function ExperienceEducation() {
             className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30"
           >
             <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <span className="text-blue-400">🌟</span>
-              My Story
+              <span className="text-blue-400">⚡</span>
+              My Learning Philosophy
             </h3>
             
             <div className="space-y-4 text-gray-300">
+              {/* Featured Quote */}
+              <div className="bg-gradient-to-r from-blue-900/40 to-cyan-900/40 rounded-xl p-6 border border-cyan-400/30 mb-6">
+                <p className="text-cyan-200 font-semibold italic text-lg text-center">
+                  "Every problem is just a puzzle waiting for the right algorithm."
+                </p>
+              </div>
+              
               <p className="leading-relaxed">
-                My interest in cybersecurity began when I realized how much of our world depends on digital security. Every day, we trust systems with our personal data, financial information, and digital lives.
+                I'm driven by curiosity and the belief that technology shapes our future. My approach? Start exploring, stay curious, and never stop learning.
               </p>
               
               <p className="leading-relaxed">
-                I started with <span className="text-yellow-400 font-medium">Python</span> because it&apos;s powerful for security automation, then expanded into <span className="text-cyan-400 font-medium">web development</span> to understand how applications work from both sides - building them and securing them.
+                Starting with <span className="text-purple-400 font-medium">cybersecurity</span> gives me a unique foundation - understanding how systems can break teaches you how to build them stronger. But my ultimate destination is <span className="text-cyan-400 font-medium">Computer Science</span> where I can explore everything from AI to web development.
               </p>
               
               <p className="leading-relaxed">
-                What drives me is the challenge of thinking like both the defender and the attacker. Every security measure has to be perfect, but an attacker only needs to find one weakness.
+                Every day brings new concepts to discover, new challenges to understand, and new possibilities to explore. I'm just getting started, but that's what makes this journey exciting.
               </p>
 
               <div className="pt-4 border-t border-gray-700/50">
-                <h4 className="text-white font-semibold mb-3">Learning Approach</h4>
+                <h4 className="text-white font-semibold mb-3">How I Learn</h4>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                    <span>Hands-on projects</span>
+                    <span>Build simple projects</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                    <span>Documentation deep-dives</span>
+                    <span>Practice daily coding</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                    <span>VM experimentation</span>
+                    <span>Research concepts</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-red-400 rounded-full"></span>
-                    <span>Security research</span>
+                    <span className="w-2 h-2 bg-cyan-400 rounded-full"></span>
+                    <span>Stay endlessly curious</span>
                   </div>
                 </div>
               </div>
@@ -120,38 +127,83 @@ export default function ExperienceEducation() {
           </motion.div>
         </div>
 
-        {/* Achievements */}
+        {/* Updated Roadmap */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
           className="mt-16 bg-gradient-to-br from-gray-900/60 to-black/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30"
         >
-          <h3 className="text-xl font-bold text-white mb-8 text-center">Self-Taught Achievements</h3>
+          <h3 className="text-xl font-bold text-white mb-8 text-center">The Roadmap Ahead</h3>
           
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🔐</span>
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                <span className="text-2xl">🛡️</span>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-white">1</span>
+                </div>
               </div>
-              <h4 className="text-yellow-300 font-semibold mb-2">Password Security Tool</h4>
-              <p className="text-gray-400 text-sm">Built a comprehensive password strength analyzer in Python</p>
+              <h4 className="text-purple-300 font-semibold mb-2">Phase 1: Foundation</h4>
+              <p className="text-gray-400 text-sm">Cert IV Cybersecurity (Oct 2025-Oct 2026) - Learning security principles & tech fundamentals</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                <span className="text-2xl">🎓</span>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-white">2</span>
+                </div>
+              </div>
+              <h4 className="text-cyan-300 font-semibold mb-2">Phase 2: Deep Dive</h4>
+              <p className="text-gray-400 text-sm">Bachelor of Computer Science (2027-2030) - Mastering algorithms, systems & software engineering</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                <span className="text-2xl">🚀</span>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-white">3</span>
+                </div>
+              </div>
+              <h4 className="text-green-300 font-semibold mb-2">Phase 3: Impact</h4>
+              <p className="text-gray-400 text-sm">Software engineering career - Building innovative solutions and contributing to technology</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Learning Evidence - Honest Version */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="mt-12 bg-gradient-to-br from-gray-900/60 to-black/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30"
+        >
+          <h3 className="text-xl font-bold text-white mb-8 text-center">Learning Evidence</h3>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🐍</span>
+              </div>
+              <h4 className="text-blue-300 font-semibold mb-2">Python Learning</h4>
+              <p className="text-gray-400 text-sm">Starting with fundamentals - each concept builds toward bigger projects</p>
             </div>
             
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">💻</span>
+                <span className="text-2xl">🌐</span>
               </div>
-              <h4 className="text-cyan-300 font-semibold mb-2">Interactive Portfolio</h4>
-              <p className="text-gray-400 text-sm">Created this responsive website with React, TypeScript & animations</p>
+              <h4 className="text-cyan-300 font-semibold mb-2">This Portfolio Site</h4>
+              <p className="text-gray-400 text-sm">Built while learning web technologies - my first real project and learning playground</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">📈</span>
               </div>
-              <h4 className="text-green-300 font-semibold mb-2">Continuous Learning</h4>
-              <p className="text-gray-400 text-sm">Daily practice with new technologies and security concepts</p>
+              <h4 className="text-purple-300 font-semibold mb-2">Daily Progress</h4>
+              <p className="text-gray-400 text-sm">Small steps every day - researching concepts, practicing basics, preparing for the journey ahead</p>
             </div>
           </div>
         </motion.div>

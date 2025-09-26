@@ -82,14 +82,14 @@ export default function Footer() {
                 <LogoWithText size="sm" />
               </div>
               <p className="text-blue-200/70 text-xs leading-relaxed mb-4">
-                Cybersecurity student moving into computer science. Always learning, always growing.
+                Cybersecurity student in Brisbane, Australia, moving into computer science. Always learning, always growing.
               </p>
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
                 <span className="text-blue-300/60 text-xs">Available for opportunities</span>
               </div>
 
-              {/* 🎵 Spotify Music Widget with Header */}
+              {/* Spotify Music Widget with Header */}
               <div className="space-y-3">
                 {/* Header Text */}
                 <div className="flex items-center gap-2">
@@ -186,10 +186,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright with Music Credit */}
             <div className="text-blue-200/50 text-xs text-center md:text-left">
-              © {currentYear} lostastr0. Built with passion, lots of coffee ☕
+              © {currentYear} lostastr0. Built with passion, lots of coffee
             </div>
 
-            {/* 🎯 FIXED: Tech Stack with "Built on" Label */}
+            {/* Tech Stack with "Built on" Label */}
             <div className="flex flex-col md:flex-row items-center gap-3">
               <span className="text-blue-300/70 text-xs font-medium">Built on</span>
               <div className="flex items-center gap-3">
