@@ -139,8 +139,13 @@ export default function ProjectCard() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<"all" | "cybersecurity" | "development" | "learning">("all");
 
-  const realProjects = projects.filter(project => project.isReal);
-  const placeholderProjects = projects.filter(project => !project.isReal);
+  // ✅ FIXED - Now properly filters by category
+  const realProjects = projects.filter(project => 
+    project.isReal && (filter === "all" || project.category === filter)
+  );
+  const placeholderProjects = projects.filter(project => 
+    !project.isReal && (filter === "all" || project.category === filter)
+  );
 
   // Close modal on escape key
   useEffect(() => {
@@ -347,78 +352,80 @@ export default function ProjectCard() {
       )}
 
       {/* Future Learning Projects */}
-      <motion.div 
-        className="w-full"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
-        <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-          <span className="text-blue-400">🚧</span>
-          Learning Roadmap ({placeholderProjects.length} planned)
-        </h3>
-        
+      {placeholderProjects.length > 0 && (
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          className="w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
         >
-          {placeholderProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              variants={cardVariants}
-              whileHover="hover"
-              className="group relative"
-            >
-              <div
-                className="relative bg-gradient-to-br from-gray-900/60 to-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30 hover:border-blue-500/30 transition-all duration-300 cursor-pointer h-full"
-                onClick={() => setSelectedProject(project)}
+          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span className="text-blue-400">🚧</span>
+            Learning Roadmap ({placeholderProjects.length} planned)
+          </h3>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {placeholderProjects.map((project) => (
+              <motion.div
+                key={project.id}
+                variants={cardVariants}
+                whileHover="hover"
+                className="group relative"
               >
-                {/* Status Badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl">{getCategoryIcon(project.category)}</span>
-                  <div className="flex items-center gap-2">
-                    <motion.div 
-                      className={`w-2 h-2 rounded-full ${getStatusColor(project.status)}`}
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    ></motion.div>
-                    <span className="text-xs text-gray-400 capitalize">{project.status.replace('-', ' ')}</span>
+                <div
+                  className="relative bg-gradient-to-br from-gray-900/60 to-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30 hover:border-blue-500/30 transition-all duration-300 cursor-pointer h-full"
+                  onClick={() => setSelectedProject(project)}
+                >
+                  {/* Status Badge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-2xl">{getCategoryIcon(project.category)}</span>
+                    <div className="flex items-center gap-2">
+                      <motion.div 
+                        className={`w-2 h-2 rounded-full ${getStatusColor(project.status)}`}
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      ></motion.div>
+                      <span className="text-xs text-gray-400 capitalize">{project.status.replace('-', ' ')}</span>
+                    </div>
                   </div>
+
+                  <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm mb-4">
+                    {project.description}
+                  </p>
+
+                  {/* Tech Stack Preview */}
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {project.techStack.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-1 bg-gray-800/40 text-gray-400 rounded text-xs"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.techStack.length > 3 && (
+                      <span className="px-2 py-1 text-gray-500 text-xs">
+                        +{project.techStack.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Placeholder Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-gray-500/5 opacity-0 group-hover:opacity-100 rounded-xl transition-all duration-500"></div>
                 </div>
-
-                <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 text-sm mb-4">
-                  {project.description}
-                </p>
-
-                {/* Tech Stack Preview */}
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {project.techStack.slice(0, 3).map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-1 bg-gray-800/40 text-gray-400 rounded text-xs"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.techStack.length > 3 && (
-                    <span className="px-2 py-1 text-gray-500 text-xs">
-                      +{project.techStack.length - 3}
-                    </span>
-                  )}
-                </div>
-
-                {/* Placeholder Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-gray-500/5 opacity-0 group-hover:opacity-100 rounded-xl transition-all duration-500"></div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
 
       {/* Enhanced Modal */}
       <AnimatePresence>

@@ -121,34 +121,12 @@ export default function Contact() {
           </motion.a>
         </motion.div>
 
-        {/* Conversation Starters */}
-        <motion.div
-          className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm rounded-2xl p-8 border border-blue-600/20 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          <h3 className="text-xl font-semibold text-white mb-4 text-center">Great Conversation Starters</h3>
-          <div className="grid md:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-2">
-              <div className="text-blue-300">💬 "Tell me about your cybersecurity learning journey"</div>
-              <div className="text-blue-300">💬 "What's it like preparing for a Cert IV?"</div>
-              <div className="text-blue-300">💬 "Want to collaborate on a beginner project?"</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-blue-300">💬 "Any advice for getting into CS?"</div>
-              <div className="text-blue-300">💬 "What programming resources do you recommend?"</div>
-              <div className="text-blue-300">💬 "Let's discuss the latest in tech!"</div>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Response Promise */}
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
         >
           <p className="text-blue-200/80 text-sm">
             Whether you're a fellow student, industry professional, or just curious about tech – I'd love to connect!
