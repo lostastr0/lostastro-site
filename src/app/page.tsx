@@ -40,6 +40,9 @@ export default function Page() {
         <Hero />
       </motion.section>
 
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
+
       {/* About Section */}
       <motion.section
         id="about"
@@ -51,6 +54,9 @@ export default function Page() {
       >
         <AboutSection />
       </motion.section>
+
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
 
       {/* Experience & Education Section */}
       <motion.section
@@ -64,6 +70,9 @@ export default function Page() {
         <ExperienceEducation />
       </motion.section>
 
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
+
       {/* Journey Timeline Section */}
       <motion.section
         id="journey"
@@ -76,6 +85,9 @@ export default function Page() {
         <JourneyTimeline />
       </motion.section>
 
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
+
       {/* Skills & Tools Section */}
       <motion.section
         id="skills"
@@ -87,6 +99,9 @@ export default function Page() {
       >
         <SkillTools />
       </motion.section>
+
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
 
       {/* Projects Section */}
       <motion.section
@@ -120,6 +135,9 @@ export default function Page() {
         </div>
       </motion.section>
 
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
+
       {/* Contact Section */}
       <motion.section
         id="contact"
@@ -130,6 +148,9 @@ export default function Page() {
       >
         <Contact />
       </motion.section>
+
+      {/* SPACING */}
+      <div className="h-24 md:h-32 lg:h-40"></div>
 
       {/* Footer */}
       <Footer />
