@@ -3,10 +3,23 @@
 import { motion } from "framer-motion";
 import { LogoWithText } from "@/components/Logo";
 
+// ✅ Add proper types for links
+type FooterLink = {
+  label: string;
+  href: string;
+  external?: boolean;
+  isDiscord?: boolean;
+};
+
+type FooterSection = {
+  title: string;
+  links: FooterLink[];
+};
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const footerLinks = [
+  const footerLinks: FooterSection[] = [
     {
       title: "Navigation",
       links: [
@@ -42,6 +55,7 @@ export default function Footer() {
     },
   ];
 
+  // ✅ Fix function with proper typing
   const handleNavClick = (href: string, isDiscord?: boolean) => {
     if (isDiscord) {
       navigator.clipboard.writeText("lostastr0");
@@ -51,7 +65,8 @@ export default function Footer() {
     if (href.startsWith("#")) {
       const element = document.querySelector(href);
       if (element) {
-        const offsetTop = href === "#top" ? 0 : element.offsetTop - 80;
+        // ✅ Fix offsetTop type error
+        const offsetTop = href === "#top" ? 0 : (element as HTMLElement).offsetTop - 80;
         window.scrollTo({
           top: offsetTop,
           behavior: "smooth",
@@ -145,6 +160,7 @@ export default function Footer() {
                 <ul className="space-y-2">
                   {section.links.map((link) => (
                     <li key={link.label}>
+                      {/* ✅ Fix conditional rendering with proper type checking */}
                       {link.external ? (
                         <a
                           href={link.href}
@@ -163,6 +179,7 @@ export default function Footer() {
                           className="text-blue-200/60 hover:text-blue-300 transition-colors duration-200 text-xs text-left group"
                         >
                           <span>{link.label}</span>
+                          {/* ✅ Fix isDiscord property check */}
                           {link.isDiscord && (
                             <span className="text-xs text-blue-400/50 ml-1">@lostastr0</span>
                           )}

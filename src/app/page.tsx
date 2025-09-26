@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useOffsetAnchors } from "@/hooks/useOffsetAnchors";
 import Nav from "./components/Nav";
-import Hero from "./components/Hero";
+import Hero from "./components/Hero";  
 import AboutSection from "./components/AboutSection";
 import JourneyTimeline from "./components/JourneyTimeline";
 import ProjectCard from "./components/ProjectCard";
@@ -97,6 +97,7 @@ export default function Page() {
         transition={{ duration: 0.6 }}
         className="scroll-mt-20"
       >
+        {/* ✅ FIXED - Removed empty array props */}
         <SkillTools />
       </motion.section>
 

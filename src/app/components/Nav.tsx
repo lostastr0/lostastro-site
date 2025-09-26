@@ -95,7 +95,7 @@ export default function Nav() {
     } else {
       const element = document.querySelector(href);
       if (element) {
-        const offsetTop = element.offsetTop - 80; // Account for fixed navbar
+        const offsetTop = (element as HTMLElement).offsetTop - 80;
         window.scrollTo({
           top: Math.max(0, offsetTop),
           behavior: 'smooth'

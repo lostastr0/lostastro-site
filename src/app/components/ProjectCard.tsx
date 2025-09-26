@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion"; // ✅ Added Variants import
 import PasswordCard from "./PasswordCard";
 
 type Project = {
@@ -42,7 +42,6 @@ const projects: Project[] = [
     longDescription: "A professional portfolio website built with Next.js featuring animated components, interactive timeline with real-time progress tracking, mobile-optimized design, and smooth animations. Includes live project demos, responsive design patterns, and advanced UI/UX elements. The site demonstrates modern web development practices including TypeScript, Tailwind CSS, Framer Motion animations, and mobile-first responsive design.",
     category: "development", 
     techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive Design", "Interactive Animations"],
-    demoUrl: "https://yourportfolio.com", // Add your actual URL
     status: "completed",
     featured: true,
     isReal: true
@@ -98,8 +97,8 @@ const projects: Project[] = [
   }
 ];
 
-// Animation variants
-const containerVariants = {
+// ✅ Properly typed Animation variants with Variants type
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -107,7 +106,7 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
@@ -120,14 +119,18 @@ const cardVariants = {
   }
 };
 
-const modalVariants = {
+const modalVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8, y: 20 },
   visible: { 
-    opacity: 1, scale: 1, y: 0,
+    opacity: 1, 
+    scale: 1, 
+    y: 0,
     transition: { duration: 0.3, ease: "easeOut" }
   },
   exit: {
-    opacity: 0, scale: 0.8, y: 20,
+    opacity: 0, 
+    scale: 0.8, 
+    y: 20,
     transition: { duration: 0.2 }
   }
 };
@@ -135,10 +138,6 @@ const modalVariants = {
 export default function ProjectCard() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<"all" | "cybersecurity" | "development" | "learning">("all");
-
-  const filteredProjects = projects.filter(project => 
-    filter === "all" || project.category === filter
-  );
 
   const realProjects = projects.filter(project => project.isReal);
   const placeholderProjects = projects.filter(project => !project.isReal);
@@ -203,7 +202,7 @@ export default function ProjectCard() {
           ].map((filterOption) => (
             <motion.button
               key={filterOption.key}
-              onClick={() => setFilter(filterOption.key as any)}
+              onClick={() => setFilter(filterOption.key as "all" | "cybersecurity" | "development" | "learning")}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 filter === filterOption.key
                   ? 'bg-gradient-to-r from-sky-600 to-cyan-600 text-white shadow-lg'
@@ -219,7 +218,7 @@ export default function ProjectCard() {
         </div>
       </motion.div>
 
-      {/* Completed Projects Section - Now with 2 projects! */}
+      {/* Completed Projects Section */}
       {realProjects.length > 0 && (
         <motion.div 
           className="w-full mb-12"
@@ -293,9 +292,21 @@ export default function ProjectCard() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <span>{project.component ? '🚀' : '🌐'}</span> 
-                        {project.component ? 'Try Demo' : 'View Site'}
+                        {project.id === 'portfolio-site' ? (
+                          <>
+                            <span>✨</span> You&apos;re Here!
+                          </>
+                        ) : project.component ? (
+                          <>
+                            <span>🚀</span> Try Demo
+                          </>
+                        ) : (
+                          <>
+                            <span>👁️</span> View Details
+                          </>
+                        )}
                       </motion.button>
+                      
                       {project.githubUrl && (
                         <motion.a
                           href={project.githubUrl}
@@ -309,7 +320,8 @@ export default function ProjectCard() {
                           <span>📂</span> Code
                         </motion.a>
                       )}
-                      {project.demoUrl && (
+                      
+                      {project.demoUrl && project.id !== 'portfolio-site' && (
                         <motion.a
                           href={project.demoUrl}
                           target="_blank"
@@ -352,7 +364,7 @@ export default function ProjectCard() {
           initial="hidden"
           animate="visible"
         >
-          {placeholderProjects.map((project, index) => (
+          {placeholderProjects.map((project) => (
             <motion.div
               key={project.id}
               variants={cardVariants}
@@ -536,6 +548,20 @@ export default function ProjectCard() {
                   </motion.div>
                 )}
 
+                {/* Special message for portfolio project */}
+                {selectedProject.id === 'portfolio-site' && (
+                  <motion.div 
+                    className="mb-8 p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <p className="text-blue-300 text-sm">
+                      ✨ You&apos;re currently experiencing this project! This entire website is the interactive portfolio showcasing modern web development techniques.
+                    </p>
+                  </motion.div>
+                )}
+
                 {/* Placeholder Notice */}
                 {!selectedProject.isReal && (
                   <motion.div 
@@ -545,7 +571,7 @@ export default function ProjectCard() {
                     transition={{ delay: 0.4 }}
                   >
                     <p className="text-blue-300 text-sm">
-                      🚧 This project is part of my learning roadmap. I'll be building this as I continue my cybersecurity and CS education journey.
+                      🚧 This project is part of my learning roadmap. I&apos;ll be building this as I continue my cybersecurity and CS education journey.
                     </p>
                   </motion.div>
                 )}
@@ -557,7 +583,7 @@ export default function ProjectCard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  {selectedProject.demoUrl && (
+                  {selectedProject.demoUrl && selectedProject.id !== 'portfolio-site' && (
                     <motion.a
                       href={selectedProject.demoUrl}
                       target="_blank"
