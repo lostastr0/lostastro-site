@@ -9,19 +9,19 @@ const nextConfig: NextConfig = {
     unoptimized: true
   },
   
-  // Additional optimizations
-  experimental: {
-    optimizeCss: true,
-  },
+  // REMOVED CSS OPTIMIZATION - was causing critters error
+  // experimental: {
+  //   optimizeCss: true,
+  // },
   
   // ESLint configuration - CHANGED TO TRUE
   eslint: {
-    ignoreDuringBuilds: true,  // ← Changed from false to true
+    ignoreDuringBuilds: true,
   },
   
   // TypeScript configuration - CHANGED TO TRUE
   typescript: {
-    ignoreBuildErrors: true,   // ← Changed from false to true
+    ignoreBuildErrors: true,
   },
 
   // DEPLOYMENT CONFIG (COMMENTED OUT FOR NOW)
