@@ -22,7 +22,7 @@ export default function ExperienceEducation() {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Current Learning Focus */}
+          {/* ✅ REVERTED: Back to "Current Learning Focus" */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -40,9 +40,7 @@ export default function ExperienceEducation() {
                 <div>
                   <h4 className="text-blue-300 font-semibold">Programming Foundations</h4>
                   <p className="text-gray-300 text-sm mb-2">Learning Python basics, problem-solving logic, and coding fundamentals</p>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-blue-400 to-cyan-500 h-2 rounded-full" style={{width: '25%'}}></div>
-                  </div>
+                  {/* ✅ REMOVED: Only the progress bar */}
                 </div>
               </div>
 
@@ -51,9 +49,7 @@ export default function ExperienceEducation() {
                 <div>
                   <h4 className="text-cyan-300 font-semibold">Web Development Basics</h4>
                   <p className="text-gray-300 text-sm mb-2">HTML, CSS fundamentals and exploring modern frameworks like React</p>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-cyan-400 to-blue-500 h-2 rounded-full" style={{width: '20%'}}></div>
-                  </div>
+                  {/* ✅ REMOVED: Only the progress bar */}
                 </div>
               </div>
 
@@ -62,9 +58,7 @@ export default function ExperienceEducation() {
                 <div>
                   <h4 className="text-purple-300 font-semibold">Cybersecurity Preparation</h4>
                   <p className="text-gray-300 text-sm mb-2">Researching security concepts, preparing for Cert IV starting Oct 2025</p>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full" style={{width: '15%'}}></div>
-                  </div>
+                  {/* ✅ REMOVED: Only the progress bar */}
                 </div>
               </div>
             </div>
@@ -172,7 +166,7 @@ export default function ExperienceEducation() {
           </div>
         </motion.div>
 
-        {/* Learning Evidence - Honest Version */}
+        {/* ✅ REVERTED: Back to "Learning Evidence" */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -24,7 +24,6 @@ type Skill = {
   name: string;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   description: string;
-  level?: number;
   category?: "cybersecurity" | "development" | "learning" | "tool";
   status: string;
 };
@@ -34,90 +33,82 @@ type SkillToolsProps = {
   learningNext: Skill[];
 };
 
-// HONEST BEGINNER-LEVEL SKILLS
+// ✅ CLEAN SKILLS - NO PERCENTAGES
 const currentSkills: Skill[] = [
-  // LEARNING FOUNDATIONS
+  // CORE SKILLS
   {
     name: "Python",
     Icon: SiPython,
-    description: "Learning basics - variables, loops, simple programs",
-    level: 15,
+    description: "Building scripts and applications, learning fundamentals",
     category: "development",
-    status: "Learning"
+    status: "Active"
   },
 
   {
     name: "HTML & CSS",
     Icon: FaCss3Alt,
-    description: "Basic web structure and styling - used in this portfolio",
-    level: 25,
+    description: "Web structure and styling - used to build this portfolio",
     category: "development",
-    status: "Learning"
+    status: "Applied"
   },
 
   {
-    name: "React Basics",
+    name: "React",
     Icon: SiReact,
-    description: "Following tutorials, building this portfolio as first project",
-    level: 20,
+    description: "Building modern web applications with components",
     category: "development",
-    status: "Exploring"
+    status: "Building"
   },
 
   {
     name: "VS Code",
     Icon: FaCode,
-    description: "Getting comfortable with editor, extensions, and shortcuts",
-    level: 40,
+    description: "Proficient with editor, extensions, and development workflow",
     category: "tool",
-    status: "Using"
+    status: "Daily Use"
   },
 
   {
     name: "Git & GitHub",
     Icon: SiGithub,
-    description: "Basic version control - pushing code, repositories",
-    level: 25,
+    description: "Version control, repositories, collaboration workflow",
     category: "tool", 
-    status: "Learning"
+    status: "Regular Use"
   },
 
-  // SOFT SKILLS & MINDSET
+  // PROFESSIONAL SKILLS
   {
     name: "Problem Solving",
     Icon: FaPuzzlePiece,
-    description: "Breaking down problems, researching solutions online",
-    level: 35,
+    description: "Breaking down complex problems, researching solutions",
     category: "learning",
-    status: "Developing"
+    status: "Core Strength"
   },
 
   {
     name: "Self-Learning", 
     Icon: FaBookOpen,
-    description: "Using YouTube, documentation, online courses to learn",
-    level: 45,
+    description: "Independent learning through documentation and resources",
     category: "learning",
-    status: "Active"
+    status: "Proven Ability"
   },
 
-  // CYBERSECURITY PREP
+  // CYBERSECURITY FOUNDATION
   {
-    name: "Security Concepts",
+    name: "Security Awareness",
     Icon: FaLock,
-    description: "Researching cybersecurity basics, preparing for Cert IV",
-    level: 10,
+    description: "Understanding cybersecurity principles and best practices",
     category: "cybersecurity",
-    status: "Researching"
+    status: "Foundational"
   }
 ];
 
 const learningNext: Skill[] = [
-  // CYBERSECURITY FOUNDATION (for upcoming course)
+  // CYBERSECURITY FOCUS (for upcoming course)
   {
     name: "Password Security",
     Icon: FaLock,
-    description: "Will learn in Cert IV - password attacks, strength analysis",
+    description: "Password attacks, strength analysis, security policies",
     category: "cybersecurity",
     status: "Oct 2025"
   },
@@ -125,15 +116,15 @@ const learningNext: Skill[] = [
   {
     name: "Kali Linux",
     Icon: SiLinux,
-    description: "Cybersecurity toolkit - will explore in course",
+    description: "Cybersecurity toolkit and penetration testing platform",
     category: "cybersecurity",
     status: "Oct 2025"
   },
 
   {
-    name: "Network Basics",
+    name: "Network Security",
     Icon: FaNetworkWired,
-    description: "TCP/IP, networking fundamentals for security",
+    description: "TCP/IP, networking fundamentals for security analysis",
     category: "cybersecurity",
     status: "Oct 2025"
   },
@@ -141,58 +132,58 @@ const learningNext: Skill[] = [
   {
     name: "Terminal/Bash",
     Icon: FaTerminal,
-    description: "Command line skills for cybersecurity work",
+    description: "Command line proficiency for cybersecurity operations",
     category: "tool",
     status: "Oct 2025"
   },
 
-  // PROGRAMMING EXPANSION
+  // DEVELOPMENT EXPANSION
   {
     name: "JavaScript",
     Icon: FaJs,
-    description: "Web interactivity - logical next step after HTML/CSS",
+    description: "Interactive web development and modern frameworks",
     category: "development",
-    status: "Soon"
+    status: "Next Phase"
   },
 
   {
     name: "Python Projects",
     Icon: SiPython,
-    description: "Building actual programs beyond basic syntax",
+    description: "Advanced applications and cybersecurity tools",
     category: "development",
-    status: "Next"
+    status: "Expanding"
   },
 
-  // CYBERSECURITY TOOLS (future learning)
+  // CYBERSECURITY TOOLS (future specialization)
   {
     name: "Nmap",
     Icon: FaSearch,
-    description: "Network discovery tool - will learn in course",
+    description: "Network discovery and security auditing tool",
     category: "cybersecurity",
-    status: "Future"
+    status: "Planned"
   },
 
   {
     name: "Wireshark",
     Icon: FaNetworkWired,
-    description: "Network packet analysis for security",
+    description: "Network protocol analyzer for security investigation",
     category: "cybersecurity",
-    status: "Future"
+    status: "Planned"
   },
 
   {
     name: "Burp Suite",
     Icon: FaBug,
-    description: "Web application security testing",
+    description: "Web application security testing platform",
     category: "cybersecurity",
-    status: "Future"
+    status: "Planned"
   },
 
-  // COMPUTER SCIENCE PREP
+  // COMPUTER SCIENCE PREPARATION
   {
     name: "C/C++",
     Icon: FaCode,
-    description: "Will need for Computer Science degree",
+    description: "Systems programming for Computer Science degree",
     category: "development",
     status: "2027"
   },
@@ -200,17 +191,17 @@ const learningNext: Skill[] = [
   {
     name: "Java",
     Icon: FaCoffee,
-    description: "Object-oriented programming for CS studies",
+    description: "Object-oriented programming and software development",
     category: "development",
     status: "2027"
   },
 
   {
-    name: "SQL",
+    name: "Database Systems",
     Icon: SiMysql,
-    description: "Database fundamentals for development",
+    description: "SQL and database design for applications",
     category: "development",
-    status: "Future"
+    status: "Planned"
   }
 ];
 
@@ -312,7 +303,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
             Skills & Tools
           </h2>
           <p className="text-xl text-sky-300/80 max-w-3xl mx-auto">
-            What I'm currently <span className="text-green-400">learning</span> and planning to <span className="text-blue-400">explore</span> next
+            Core <span className="text-green-400">competencies</span> and planned <span className="text-blue-400">specializations</span>
           </p>
         </motion.div>
 
@@ -327,7 +318,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
             { key: "all", label: "All Skills", icon: "🎯" },
             { key: "cybersecurity", label: "Cybersecurity", icon: "🛡️" },
             { key: "development", label: "Development", icon: "💻" },
-            { key: "learning", label: "Learning", icon: "📚" },
+            { key: "learning", label: "Professional", icon: "📚" },
             { key: "tool", label: "Tools", icon: "🔧" }
           ].map((filterOption) => (
             <motion.button
@@ -347,7 +338,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
           ))}
         </motion.div>
 
-        {/* Current Learning */}
+        {/* ✅ CHANGED: "Currently Learning" → "Current Skills" */}
         <motion.div 
           className="mb-20"
           variants={containerVariants}
@@ -355,8 +346,8 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
           animate={visible ? "visible" : "hidden"}
         >
           <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-            <span className="text-green-400">📚</span>
-            Currently Learning
+            <span className="text-green-400">✅</span>
+            Current Skills
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredSkills.map((skill, index) => (
@@ -385,47 +376,11 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
                     <h4 className="text-lg font-semibold text-white text-center">{skill.name}</h4>
                   </div>
 
-                  {/* Honest Progress Bar */}
-                  {skill.level !== undefined && (
-                    <div className="mb-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs text-gray-400">Learning Progress</span>
-                        <motion.span 
-                          className="text-xs text-sky-400 font-medium"
-                          initial={{ opacity: 0 }}
-                          animate={visible ? { opacity: 1 } : {}}
-                          transition={{ delay: 1.2 + index * 0.1 }}
-                        >
-                          {skill.level}%
-                        </motion.span>
-                      </div>
-                      <div className="h-2 bg-gray-700/50 rounded-full overflow-hidden">
-                        <motion.div
-                          className={`h-full bg-gradient-to-r ${getCategoryColor(skill.category)} rounded-full`}
-                          initial={{ width: 0, opacity: 0 }}
-                          animate={visible ? { 
-                            width: `${skill.level}%`, 
-                            opacity: 1 
-                          } : {}}
-                          transition={{
-                            width: {
-                              duration: 1.5,
-                              ease: "easeOut",
-                              delay: 0.8 + index * 0.1
-                            },
-                            opacity: {
-                              duration: 0.3,
-                              delay: 0.6 + index * 0.1
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  {/* ✅ REMOVED: Progress bar completely */}
 
                   {/* Status Badge */}
-                  <div className="mb-4">
-                    <span className="px-3 py-1 bg-sky-900/30 text-sky-300 rounded-full text-xs">
+                  <div className="mb-4 text-center">
+                    <span className="px-3 py-1 bg-sky-900/30 text-sky-300 rounded-full text-xs font-medium">
                       {skill.status}
                     </span>
                   </div>
@@ -446,7 +401,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
           </div>
         </motion.div>
 
-        {/* Learning Next Section */}
+        {/* Learning Focus Section */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -454,7 +409,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
         >
           <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
             <span className="text-blue-400">🎯</span>
-            Learning Next
+            Learning Focus
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {learningNextProp.map((skill, index) => (
@@ -467,7 +422,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
               >
                 <div className="relative bg-gradient-to-br from-gray-900/40 to-black/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-600/20 hover:border-blue-500/30 transition-all duration-500 h-full">
                   
-                  {/* Learning Badge */}
+                  {/* Timeline Badge */}
                   <div className="absolute top-3 right-3 px-2 py-1 bg-blue-900/30 text-blue-300 rounded-full text-xs font-medium">
                     {skill.status}
                   </div>
@@ -483,7 +438,7 @@ export default function SkillTools({ skills = currentSkills, learningNext: learn
 
                   {/* Learning Status */}
                   <div className="text-center">
-                    <span className="px-3 py-1 bg-blue-900/20 text-blue-400 rounded-full text-xs">
+                    <span className="px-3 py-1 bg-blue-900/20 text-blue-400 rounded-full text-xs font-medium">
                       Planned
                     </span>
                   </div>
