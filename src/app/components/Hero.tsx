@@ -632,11 +632,11 @@ const Hero: React.FC = () => {
             <p className="text-lg sm:text-xl md:text-2xl text-blue-200 font-bold leading-tight">
               Passionate about{" "}
               <span className="text-cyan-400">Computer Science</span> with{" "}
-              <span className="text-blue-400">cybersecurity</span> as my pathway
+              <span className="text-blue-400">Cyber Security</span> as my pathway
             </p>
             <p className="text-sm sm:text-base md:text-lg text-blue-200/80 leading-relaxed px-4 md:px-0">
               Currently learning programming and building projects while
-              preparing for Cert IV in Cybersecurity (2025) - my stepping stone
+              preparing for Cert IV in Cyber Security (2025) - my stepping stone
               to a CS degree
             </p>
           </div>

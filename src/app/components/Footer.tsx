@@ -48,7 +48,7 @@ export default function Footer() {
       title: "Learning",
       links: [
         { label: "Computer Science", href: "#skills" },
-        { label: "Cybersecurity", href: "#journey" },
+        { label: "Cyber Security", href: "#journey" }, // 🇦🇺 "Cyber Security"
         { label: "Development", href: "#projects" },
         { label: "Ethical Hacking", href: "#experience" },
       ],
@@ -97,7 +97,7 @@ export default function Footer() {
                 <LogoWithText size="sm" />
               </div>
               <p className="text-blue-200/70 text-xs leading-relaxed mb-4">
-                Cybersecurity student in Brisbane, Australia, moving into computer science. Always learning, always growing.
+                Cyber Security student in Brisbane, Australia, moving into Computer Science. Always learning, always growing.
               </p>
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
@@ -136,7 +136,7 @@ export default function Footer() {
                       href="https://open.spotify.com/playlist/55JbdGOfDKw0qHWprCnSVd?si=315982bb5d2f4417" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded-full transition-colors font-medium flex items-center gap-1 flex-shrink-0"
+                      className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded-full transition-colours font-medium flex items-center gap-1 flex-shrink-0"
                     >
                       <span>▶</span> Play
                     </a>
@@ -160,13 +160,12 @@ export default function Footer() {
                 <ul className="space-y-2">
                   {section.links.map((link) => (
                     <li key={link.label}>
-                      {/* ✅ Fix conditional rendering with proper type checking */}
                       {link.external ? (
                         <a
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-200/60 hover:text-blue-300 transition-colors duration-200 text-xs flex items-center gap-1 group"
+                          className="text-blue-200/60 hover:text-blue-300 transition-colours duration-200 text-xs flex items-center gap-1 group"
                         >
                           <span>{link.label}</span>
                           <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,10 +175,9 @@ export default function Footer() {
                       ) : (
                         <button
                           onClick={() => handleNavClick(link.href, link.isDiscord)}
-                          className="text-blue-200/60 hover:text-blue-300 transition-colors duration-200 text-xs text-left group"
+                          className="text-blue-200/60 hover:text-blue-300 transition-colours duration-200 text-xs text-left group"
                         >
                           <span>{link.label}</span>
-                          {/* ✅ Fix isDiscord property check */}
                           {link.isDiscord && (
                             <span className="text-xs text-blue-400/50 ml-1">@lostastr0</span>
                           )}
@@ -203,7 +201,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright with Music Credit */}
             <div className="text-blue-200/50 text-xs text-center md:text-left">
-              © {currentYear} lostastr0. Built with passion, lots of coffee
+              © {currentYear} lostastr0. Built with passion, heaps of coffee
             </div>
 
             {/* Tech Stack with "Built on" Label */}

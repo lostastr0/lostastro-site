@@ -66,7 +66,7 @@ export default function AboutSection() {
                 "Why Computer Science?"
               </h3>
               <blockquote className="text-xl text-blue-100 leading-relaxed mb-6">
-                My fascination with technology started early, but it crystallized when I realized that 
+                My fascination with technology started early, but it crystallised when I realised that 
                 <strong className="text-blue-300"> Computer Science is the foundation that powers everything digital</strong>—from 
                 the apps we use daily to the security systems that protect our data.
               </blockquote>

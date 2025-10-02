@@ -105,7 +105,7 @@ export default function ExperienceEducation() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                    <span>Practice daily coding</span>
+                    <span>Practise daily coding</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
@@ -181,7 +181,7 @@ export default function ExperienceEducation() {
                 <span className="text-2xl">🐍</span>
               </div>
               <h4 className="text-blue-300 font-semibold mb-2">Python Learning</h4>
-              <p className="text-gray-400 text-sm">Starting with fundamentals - each concept builds toward bigger projects</p>
+              <p className="text-gray-400 text-sm">Starting with fundamentals - each concept builds towards bigger projects</p>
             </div>
             
             <div className="text-center">
@@ -189,7 +189,7 @@ export default function ExperienceEducation() {
                 <span className="text-2xl">🌐</span>
               </div>
               <h4 className="text-cyan-300 font-semibold mb-2">This Portfolio Site</h4>
-              <p className="text-gray-400 text-sm">Built while learning web technologies - my first real project and learning playground</p>
+              <p className="text-gray-400 text-sm">Built whilst learning web technologies - my first real project and learning playground</p>
             </div>
             
             <div className="text-center">
@@ -197,7 +197,7 @@ export default function ExperienceEducation() {
                 <span className="text-2xl">📈</span>
               </div>
               <h4 className="text-purple-300 font-semibold mb-2">Daily Progress</h4>
-              <p className="text-gray-400 text-sm">Small steps every day - researching concepts, practicing basics, preparing for the journey ahead</p>
+              <p className="text-gray-400 text-sm">Small steps every day - researching concepts, practising basics, preparing for the journey ahead</p>
             </div>
           </div>
         </motion.div>
