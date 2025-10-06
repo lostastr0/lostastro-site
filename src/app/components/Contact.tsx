@@ -21,7 +21,6 @@ export default function Contact() {
       id="contact"
       className="min-h-screen flex flex-col items-center justify-center bg-black text-blue-100 px-4 relative overflow-hidden"
     >
-      {/* Background Effects */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/3 left-1/3 h-96 w-96 rounded-full bg-gradient-to-r from-blue-600/20 via-blue-700/20 to-blue-800/20 blur-3xl animate-pulse" />
         <div className="absolute bottom-1/3 right-1/3 h-96 w-96 rounded-full bg-gradient-to-l from-blue-500/20 via-blue-600/20 to-blue-700/20 blur-3xl animate-pulse" />
@@ -35,18 +34,17 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl xl:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent mb-6">
-            Let's Connect
+            Let’s Connect
           </h2>
           <p className="text-xl text-blue-300/80 mb-4 max-w-3xl mx-auto">
             Interested in <span className="text-blue-400">computer science</span>,{" "}
-            <span className="text-blue-400">cybersecurity</span>, or want to chat about tech?
+            <span className="text-blue-400">cyber security</span>, or want to chat about tech?
           </p>
           <p className="text-lg text-blue-200/70 mb-8 max-w-2xl mx-auto">
-            I'm always open to discussing projects, learning opportunities, or technology topics!
+            Always open to discussing projects, learning opportunities, or technology topics!
           </p>
         </motion.div>
 
-        {/* What I'm Looking For */}
         <motion.div
           className="grid md:grid-cols-3 gap-6 mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -55,16 +53,14 @@ export default function Contact() {
         >
           <div className="bg-gradient-to-br from-gray-900/70 to-black/70 backdrop-blur-sm rounded-2xl p-6 border border-blue-600/20 text-center">
             <div className="text-3xl mb-4">🤝</div>
-            <h3 className="text-lg font-semibold text-white mb-2">Mentorship</h3>
-            <p className="text-blue-200/70 text-sm">Seeking guidance from experienced professionals in cybersecurity and CS</p>
+            <h3 className="text-lg font-semibold text-white mb-2">Mentoring</h3>
+            <p className="text-blue-200/70 text-sm">Seeking guidance from experienced professionals in cyber security and computer science</p>
           </div>
-          
           <div className="bg-gradient-to-br from-gray-900/70 to-black/70 backdrop-blur-sm rounded-2xl p-6 border border-blue-600/20 text-center">
             <div className="text-3xl mb-4">👥</div>
             <h3 className="text-lg font-semibold text-white mb-2">Study Partners</h3>
-            <p className="text-blue-200/70 text-sm">Connect with fellow cybersecurity students and CS learners</p>
+            <p className="text-blue-200/70 text-sm">Connect with fellow cyber security students and computer science learners</p>
           </div>
-          
           <div className="bg-gradient-to-br from-gray-900/70 to-black/70 backdrop-blur-sm rounded-2xl p-6 border border-blue-600/20 text-center">
             <div className="text-3xl mb-4">💡</div>
             <h3 className="text-lg font-semibold text-white mb-2">Collaboration</h3>
@@ -72,14 +68,12 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        {/* Contact Methods */}
         <motion.div
           className="grid md:grid-cols-2 gap-6 mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          {/* Discord - Primary */}
           <motion.div
             onClick={copyDiscordUsername}
             className="flex items-center gap-4 px-8 py-6 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer border border-[#5865F2]/20 relative overflow-hidden"
@@ -97,11 +91,10 @@ export default function Contact() {
               <div className="text-sm opacity-90">
                 {copied ? "✅ Copied!" : "Click to copy • Add me on Discord"}
               </div>
-              <div className="text-xs opacity-75 mt-1">Usually respond within a few hours</div>
+              <div className="text-xs opacity-75 mt-1">Usually responds within a few hours</div>
             </div>
           </motion.div>
 
-          {/* GitHub */}
           <motion.a
             href="https://github.com/lostastr0"
             target="_blank"
@@ -121,7 +114,6 @@ export default function Contact() {
           </motion.a>
         </motion.div>
 
-        {/* Response Promise */}
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -129,7 +121,7 @@ export default function Contact() {
           transition={{ delay: 0.6, duration: 0.6 }}
         >
           <p className="text-blue-200/80 text-sm">
-            Whether you're a fellow student, industry professional, or just curious about tech – I'd love to connect!
+            Whether you're a fellow student, industry professional, or just curious about tech – I’d love to connect!
           </p>
         </motion.div>
       </div>

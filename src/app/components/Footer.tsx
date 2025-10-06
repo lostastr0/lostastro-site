@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { LogoWithText } from "@/components/Logo";
 
-// ✅ Add proper types for links
 type FooterLink = {
   label: string;
   href: string;
@@ -48,14 +47,13 @@ export default function Footer() {
       title: "Learning",
       links: [
         { label: "Computer Science", href: "#skills" },
-        { label: "Cyber Security", href: "#journey" }, // 🇦🇺 "Cyber Security"
+        { label: "Cyber Security", href: "#journey" },
         { label: "Development", href: "#projects" },
         { label: "Ethical Hacking", href: "#experience" },
       ],
     },
   ];
 
-  // ✅ Fix function with proper typing
   const handleNavClick = (href: string, isDiscord?: boolean) => {
     if (isDiscord) {
       navigator.clipboard.writeText("lostastr0");
@@ -65,7 +63,6 @@ export default function Footer() {
     if (href.startsWith("#")) {
       const element = document.querySelector(href);
       if (element) {
-        // ✅ Fix offsetTop type error
         const offsetTop = href === "#top" ? 0 : (element as HTMLElement).offsetTop - 80;
         window.scrollTo({
           top: offsetTop,
@@ -77,16 +74,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-gradient-to-b from-black via-gray-900/50 to-black border-t border-blue-500/20 relative overflow-hidden">
-      {/* Background Effects */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-1/4 h-32 w-32 rounded-full bg-gradient-to-r from-blue-600/10 via-blue-700/10 to-blue-800/10 blur-3xl" />
         <div className="absolute bottom-0 right-1/4 h-32 w-32 rounded-full bg-gradient-to-l from-blue-500/10 via-blue-600/10 to-blue-700/10 blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 py-8">
-        {/* Compact Main Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* Brand Section - Smaller */}
           <div className="lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -104,15 +98,12 @@ export default function Footer() {
                 <span className="text-blue-300/60 text-xs">Available for opportunities</span>
               </div>
 
-              {/* Spotify Music Widget with Header */}
               <div className="space-y-3">
-                {/* Header Text */}
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="text-green-400/80 text-xs font-medium">Soundtrack to this creation</span>
                 </div>
-                
-                {/* Spotify Widget */}
+
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -131,7 +122,6 @@ export default function Footer() {
                         <p className="text-blue-300/60 text-xs truncate">Nostalgia • Vibes</p>
                       </div>
                     </div>
-                    
                     <a 
                       href="https://open.spotify.com/playlist/55JbdGOfDKw0qHWprCnSVd?si=315982bb5d2f4417" 
                       target="_blank" 
@@ -146,7 +136,6 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          {/* Footer Links - Compact */}
           {footerLinks.map((section, index) => (
             <div key={section.title} className="lg:col-span-1">
               <motion.div
@@ -191,7 +180,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Compact Bottom Section */}
         <motion.div
           className="pt-6 border-t border-blue-600/20"
           initial={{ opacity: 0, y: 20 }}
@@ -199,12 +187,9 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* Copyright with Music Credit */}
             <div className="text-blue-200/50 text-xs text-center md:text-left">
               © {currentYear} lostastr0. Built with passion, heaps of coffee
             </div>
-
-            {/* Tech Stack with "Built on" Label */}
             <div className="flex flex-col md:flex-row items-center gap-3">
               <span className="text-blue-300/70 text-xs font-medium">Built on</span>
               <div className="flex items-center gap-3">
@@ -224,7 +209,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Compact Back to Top */}
           <div className="flex justify-center mt-6">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
