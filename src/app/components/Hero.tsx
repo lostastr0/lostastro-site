@@ -74,17 +74,341 @@ const FloatingTechElements: React.FC = () => {
     y: typeof window !== "undefined" ? window.innerHeight / 2 : 0,
   });
   const elementsRef = useRef<HTMLElement[]>([]);
-  const screenSize = useResponsiveBreakpoint();
 
   useEffect(() => {
-    // Implementation for floating tech elements, particle creation, mouse interactions,
-    // responsive positioning remains as per original code.
-  }, [screenSize]);
+    const container = containerRef.current;
+    if (!container) return;
+
+    // UPDATED: Only show at 1440px+, with proper spacing
+    const getResponsivePositions = () => {
+      const width = window.innerWidth;
+      
+      if (width >= 1920) {
+        // Ultra-wide: Maximum spacing
+        const edgePadding = 18;
+        const verticalSpacing = 16;
+        
+        return [
+          { x: edgePadding, y: verticalSpacing, size: { width: 220, height: 130 } },
+          { x: 100 - edgePadding - (220/window.innerWidth*100), y: verticalSpacing, size: { width: 220, height: 130 } },
+          { x: edgePadding - 2, y: verticalSpacing + 42, size: { width: 210, height: 125 } },
+          { x: 100 - edgePadding + 2 - (210/window.innerWidth*100), y: verticalSpacing + 42, size: { width: 210, height: 125 } },
+          { x: edgePadding + 3, y: verticalSpacing + 68, size: { width: 225, height: 135 } },
+          { x: 100 - edgePadding - 3 - (225/window.innerWidth*100), y: verticalSpacing + 68, size: { width: 225, height: 135 } }
+        ];
+      }
+      else if (width >= 1440) {
+        // 1440px-1919px: Push far to edges so hero text has space
+        const verticalSpacing = 20;
+        
+        return [
+          // Left side - pushed to 5% from left edge
+          { x: 5, y: verticalSpacing, size: { width: 210, height: 125 } },
+          // Right side - pushed to 5% from right edge
+          { x: 95 - 14.6, y: verticalSpacing, size: { width: 210, height: 125 } },
+          
+          // Left side - 3% from left edge
+          { x: 3, y: verticalSpacing + 38, size: { width: 200, height: 120 } },
+          // Right side - 3% from right edge
+          { x: 97 - 13.9, y: verticalSpacing + 38, size: { width: 200, height: 120 } },
+          
+          // Left side - 6% from left edge
+          { x: 6, y: verticalSpacing + 64, size: { width: 215, height: 130 } },
+          // Right side - 6% from right edge
+          { x: 94 - 14.9, y: verticalSpacing + 64, size: { width: 215, height: 130 } }
+        ];
+      }
+      else {
+        // Below 1440px: HIDE all floating elements
+        return [];
+      }
+    };
+
+    // Tech content messages
+    const techElementsContent = [
+      {
+        type: 'laptop',
+        content: `<span style="color: #3b82f6;">jaineel@kali:~$</span> <span style="color: #60a5fa;">nmap -sS target</span><br><span style="color: #93c5fd;">Learning pentesting</span>`,
+        duration: 8, layer: 'front', animationType: 'float'
+      },
+      {
+        type: 'code',
+        content: `const student = {<br>&nbsp;&nbsp;name: 'Jaineel',<br>&nbsp;&nbsp;goal: 'CS Degree'<br>};`,
+        language: 'Computer Science', color: '#3b82f6',
+        duration: 8, layer: 'front', animationType: 'float'
+      },
+      {
+        type: 'terminal',
+        content: `$ whoami<br>Cybersecurity Student<br>$ ./ethical_hack.sh`,
+        duration: 8, layer: 'back', animationType: 'float'
+      },
+      {
+        type: 'laptop',
+        content: `<span style="color: #60a5fa;">student@dev:~#</span> <span style="color: #3b82f6;">python study.py</span><br><span style="color: #93c5fd;">Building knowledge</span>`,
+        duration: 8, layer: 'back', animationType: 'float'
+      },
+      {
+        type: 'terminal',
+        content: `> metasploit<br>> use exploit/handler<br>> Security research`,
+        duration: 8, layer: 'front', animationType: 'float'
+      },
+      {
+        type: 'code',
+        content: `// CS Journey<br>while(studying) {<br>&nbsp;&nbsp;knowledge++;<br>&nbsp;&nbsp;build_projects();<br>}`,
+        language: 'Computer Science', color: '#3b82f6',
+        duration: 8, layer: 'back', animationType: 'float'
+      }
+    ];
+
+    // Create star particles
+    const createStarParticles = () => {
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'absolute pointer-events-none star-particle';
+        star.style.cssText = `
+          left: ${Math.random() * 100}%;
+          top: ${Math.random() * 100}%;
+          width: ${Math.random() * 3 + 1}px;
+          height: ${Math.random() * 3 + 1}px;
+          background: linear-gradient(45deg, #3b82f6, #60a5fa);
+          border-radius: 50%;
+          animation: twinkle ${Math.random() * 4 + 2}s ease-in-out infinite alternate;
+          opacity: ${Math.random() * 0.8 + 0.2};
+        `;
+        container.appendChild(star);
+      }
+    };
+
+    createStarParticles();
+
+    // Get responsive positions
+    const positions = getResponsivePositions();
+
+    // Combine content with positions
+    const techElements = techElementsContent.map((element, index) => ({
+      ...element,
+      ...positions[index]
+    }));
+
+    // Mouse tracking
+    let lastMouseUpdate = 0;
+    const handleMouseMove = (e: MouseEvent) => {
+      const now = Date.now();
+      if (now - lastMouseUpdate > 16) {
+        mouseRef.current = { x: e.clientX, y: e.clientY };
+        lastMouseUpdate = now;
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    // Resize handler
+    const handleResize = () => {
+      const newPositions = getResponsivePositions();
+      elementsRef.current.forEach((el, index) => {
+        if (el && newPositions[index]) {
+          el.style.left = `${newPositions[index].x}%`;
+          el.style.top = `${newPositions[index].y}%`;
+          el.style.width = `${newPositions[index].size.width}px`;
+          el.style.height = `${newPositions[index].size.height}px`;
+        }
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Create elements
+    techElements.forEach((element, index) => {
+      if (!element.x || !element.y) return;
+
+      const elementDiv = document.createElement('div');
+      elementDiv.className = 'absolute pointer-events-none select-none tech-element';
+      
+      const opacity = element.layer === 'front' ? '0.90' : '0.75';
+      const brandBlue = '#2563eb';
+      
+      const animationClass = `unified-float-animation`;
+      const animationDelay = index * 1.3;
+      
+      elementDiv.style.cssText = `
+        left: ${element.x}%;
+        top: ${element.y}%;
+        width: ${element.size.width}px;
+        height: ${element.size.height}px;
+        animation: ${animationClass} ${element.duration}s ease-in-out infinite;
+        animation-delay: ${animationDelay}s;
+        opacity: ${opacity};
+        z-index: ${element.layer === 'front' ? '3' : '2'};
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: ${element.layer === 'front'
+          ? `0 16px 50px ${brandBlue}80, 0 8px 20px ${brandBlue}70`
+          : `0 12px 35px ${brandBlue}60, 0 6px 15px ${brandBlue}50`};
+        will-change: transform, box-shadow, opacity;
+        transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+        filter: brightness(1.05);
+      `;
+
+      // Enhanced hover effects
+      elementDiv.addEventListener('mouseenter', () => {
+        elementDiv.style.transform = 'perspective(1200px) scale(1.08) rotateX(3deg) rotateY(3deg)';
+        elementDiv.style.boxShadow = `0 25px 70px ${brandBlue}95, 0 12px 28px ${brandBlue}85`;
+        elementDiv.style.zIndex = '20';
+        elementDiv.style.opacity = '1';
+        elementDiv.style.filter = 'brightness(1.15)';
+      });
+
+      elementDiv.addEventListener('mouseleave', () => {
+        elementDiv.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+        elementDiv.style.boxShadow = element.layer === 'front'
+          ? `0 16px 50px ${brandBlue}80, 0 8px 20px ${brandBlue}70`
+          : `0 12px 35px ${brandBlue}60, 0 6px 15px ${brandBlue}50`;
+        elementDiv.style.zIndex = element.layer === 'front' ? '3' : '2';
+        elementDiv.style.opacity = opacity;
+        elementDiv.style.filter = 'brightness(1.05)';
+      });
+
+      // Content rendering
+      if (element.type === 'laptop') {
+        const baseFontSize = window.innerWidth >= 1440 ? 12 : window.innerWidth >= 768 ? 10 : 9;
+        
+        elementDiv.innerHTML = `
+          <div style="width: 100%; height: 100%; background: linear-gradient(145deg, #1e293b, #334155); border-radius: 13px 13px 6px 6px; border: 1px solid ${brandBlue}aa; position: relative; box-shadow: inset 0 3px 7px rgba(255,255,255,0.12); backdrop-filter: blur(12px);">
+            <div style="width: 94%; height: 76%; background: linear-gradient(135deg, #000000, #0f172a); margin: 3% auto; border-radius: 9px; padding: ${window.innerWidth >= 768 ? '18px' : '14px'}; font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace; font-size: ${baseFontSize}px; color: #3b82f6; overflow: hidden; line-height: 1.4; position: relative; border: 1px solid #1e293b; display: flex; flex-direction: column; justify-content: center; word-break: break-word;">
+              <div>${element.content}</div>
+              <span style="position: absolute; right: 10px; bottom: 8px; width: 10px; height: 14px; background: linear-gradient(45deg, #3b82f6, #60a5fa); animation: terminalBlink 2s infinite; border-radius: 2px; box-shadow: 0 0 8px #3b82f6;"></span>
+            </div>
+          </div>
+        `;
+      } else if (element.type === 'code') {
+        const color = element.color || '#3b82f6';
+        const language = element.language || 'JavaScript';
+        const baseFontSize = window.innerWidth >= 1440 ? 11 : window.innerWidth >= 768 ? 9 : 8;
+        
+        elementDiv.innerHTML = `
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, rgba(15, 23, 42, 0.97), rgba(30, 41, 59, 0.93)); border: 1px solid ${brandBlue}aa; border-radius: 11px; padding: ${window.innerWidth >= 768 ? '20px' : '16px'}; font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace; font-size: ${baseFontSize}px; color: #e2e8f0; backdrop-filter: blur(15px); line-height: 1.3; position: relative; overflow: hidden; display: flex; flex-direction: column; word-break: break-word;">
+            <div style="color: ${color}; font-size: ${baseFontSize - 2}px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-weight: 600; flex-shrink: 0;">
+              <span style="width: 12px; height: 12px; background: linear-gradient(45deg, ${color}, ${color}dd); border-radius: 3px; box-shadow: 0 0 8px ${color}77; animation: codePulse 3s infinite;"></span>
+              ${language}
+            </div>
+            <div style="font-size: ${baseFontSize}px; color: #cbd5e1; flex: 1; display: flex; align-items: center; word-break: break-word;">${element.content}</div>
+          </div>
+        `;
+      } else if (element.type === 'terminal') {
+        const borderColor = 'rgba(59, 130, 246, 0.65)';
+        const baseFontSize = window.innerWidth >= 1440 ? 11 : window.innerWidth >= 768 ? 9 : 8;
+        
+        elementDiv.innerHTML = `
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 0, 0, 0.97), rgba(17, 24, 39, 0.93)); border: 1px solid ${borderColor}; border-radius: 11px; padding: ${window.innerWidth >= 768 ? '20px' : '16px'}; font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace; font-size: ${baseFontSize}px; color: #3b82f6; backdrop-filter: blur(15px); line-height: 1.3; overflow: hidden; display: flex; flex-direction: column; word-break: break-word;">
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-shrink: 0;">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(45deg, #ef4444, #dc2626); box-shadow: 0 0 4px #ef4444; animation: buttonPulse 4s infinite;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(45deg, #f59e0b, #d97706); box-shadow: 0 0 4px #f59e0b; animation: buttonPulse 4s infinite 0.5s;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(45deg, #3b82f6, #60a5fa); box-shadow: 0 0 4px #3b82f6; animation: buttonPulse 4s infinite 1s;"></div>
+              <span style="color: #6b7280; font-size: ${baseFontSize - 2}px; margin-left: 8px; font-weight: 600;">Terminal</span>
+            </div>
+            <div style="color: #3b82f6; text-shadow: 0 0 4px #3b82f644; flex: 1; display: flex; align-items: center; word-break: break-word;">${element.content}</div>
+          </div>
+        `;
+      }
+
+      container.appendChild(elementDiv);
+      elementsRef.current.push(elementDiv);
+    });
+
+    // Mouse interaction
+    let animationId: number;
+    const updateInteractions = () => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      
+      elementsRef.current.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const elementCenterX = rect.left + rect.width / 2;
+        const elementCenterY = rect.top + rect.height / 2;
+        
+        const dx = mouseRef.current.x - elementCenterX;
+        const dy = mouseRef.current.y - elementCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        const parallaxStrength = el.style.zIndex === '3' ? 0.03 : 0.02;
+        const parallaxX = (mouseRef.current.x - centerX) * parallaxStrength;
+        const parallaxY = (mouseRef.current.y - centerY) * parallaxStrength;
+        
+        let transform = `translate(${parallaxX}px, ${parallaxY}px)`;
+        
+        if (distance < 160) {
+          const force = Math.max(0, (160 - distance) / 160) * 0.28;
+          const avoidX = -(dx / distance) * force * 14;
+          const avoidY = -(dy / distance) * force * 14;
+          transform = `translate(${parallaxX + avoidX}px, ${parallaxY + avoidY}px) scale(1.04)`;
+        }
+        
+        el.style.transform = `perspective(1200px) ${transform}`;
+      });
+      
+      animationId = requestAnimationFrame(updateInteractions);
+    };
+    
+    updateInteractions();
+
+    // CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.2; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1.2); }
+      }
+      
+      @keyframes terminalBlink {
+        0%, 50% { opacity: 1; transform: scale(1); }
+        51%, 100% { opacity: 0.2; transform: scale(0.9); }
+      }
+      
+      @keyframes codePulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 10px currentColor; }
+        50% { transform: scale(1.15); box-shadow: 0 0 18px currentColor; }
+      }
+      
+      @keyframes buttonPulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        25% { transform: scale(1.08); opacity: 0.8; }
+        50% { transform: scale(0.96); opacity: 1; }
+        75% { transform: scale(1.04); opacity: 0.9; }
+      }
+
+      @keyframes unified-float-animation {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-12px) rotate(0.5deg); }
+        66% { transform: translateY(-6px) rotate(-0.5deg); }
+      }
+      
+      @media (min-width: 1440px) and (max-width: 1919px) {
+        .tech-element { opacity: 0.88 !important; }
+      }
+      
+      @media (min-width: 1920px) {
+        .tech-element { opacity: 0.92 !important; }
+      }
+    `;
+    
+    document.head.appendChild(style);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationId);
+      elementsRef.current.forEach(el => el.remove());
+      elementsRef.current = [];
+      container.querySelectorAll('.star-particle').forEach(star => star.remove());
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
+    };
+  }, []);
 
   return (
     <div
       ref={containerRef}
-      className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden md:block"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden xl:block"
       style={{ opacity: 0.88 }}
     />
   );
